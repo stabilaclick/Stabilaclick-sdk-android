@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.tronlink.sdk.TronLinkSdk;
 import com.tronlink.sdk.bean.Account;
+import com.tronlink.sdk.bean.Param;
 import com.tronlink.sdk.bean.ResourceMessage;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_REQUESTCODE;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.bt_getResourceMessage).setOnClickListener(this);
         findViewById(R.id.bt_operationHash).setOnClickListener(this);
         findViewById(R.id.bt_createTransation).setOnClickListener(this);
+        findViewById(R.id.bt_triggerContract).setOnClickListener(this);
     }
 
     @Override
@@ -107,7 +110,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 operationHash();
                 break;
             case R.id.bt_createTransation:
-                createTransaction();
+                createTransactionTrx();
+                break;
+            case R.id.bt_triggerContract:
+                triggerContract();
                 break;
         }
 
@@ -136,54 +142,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * get trx balance
      */
     private void getBalanceTrx() {
-        final double balance = TronLinkSdk.getInstance().getBalanceTrx();
-        new Handler(getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                mValueTv.setText(balance + " TRX");
-            }
-        });
+        if (TextUtils.isEmpty(mAddress)) {
+            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+        }
+        else {
+            final double balance = TronLinkSdk.getInstance().getBalanceTrx(mAddress, true);
+            new Handler(getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    mValueTv.setText(balance + " TRX");
+                }
+            });
+        }
     }
 
     /**
      * get account info
      */
     private void getAccount() {
-        new Thread(
-        ) {
-            @Override
-            public void run() {
-                final Account account = TronLinkSdk.getInstance().getAccount();
-                new Handler(getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(account!=null) {
-                            mValueTv.setText(account.getBalance() + "");
+        if (TextUtils.isEmpty(mAddress)) {
+            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+        }
+        else {
+            new Thread(
+            ) {
+                @Override
+                public void run() {
+                    final Account account = TronLinkSdk.getInstance().getAccount(mAddress, true);
+                    new Handler(getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (account != null) {
+                                mValueTv.setText(account.getBalance() + "");
+                            }
                         }
-                    }
-                });
-            }
-        }.start();
+                    });
+                }
+            }.start();
+        }
     }
 
     /**
      * get resource message
      */
     private void getResourceMessage() {
-        new Thread(
-        ) {
-            @Override
-            public void run() {
-                final ResourceMessage resourceMessage = TronLinkSdk.getInstance().getResourceMessage();
-                new Handler(getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (resourceMessage != null)
-                            mValueTv.setText(resourceMessage.getTotalEnergyLimit() + "");
-                    }
-                });
-            }
-        }.start();
+        if (TextUtils.isEmpty(mAddress)) {
+            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+        }
+        else {
+            new Thread(
+            ) {
+                @Override
+                public void run() {
+                    final ResourceMessage resourceMessage = TronLinkSdk.getInstance().getResourceMessage(mAddress, true);
+                    new Handler(getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (resourceMessage != null)
+                                mValueTv.setText(resourceMessage.getTotalEnergyLimit() + "");
+                        }
+                    });
+                }
+            }.start();
+        }
     }
 
     /**
@@ -196,15 +217,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * create transaction
+     * create transaction trx
      */
-    private void createTransaction() {
+    private void createTransactionTrx() {
         if (TextUtils.isEmpty(mAddress)) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
-            String transactionJson = TronLinkSdk.getInstance().createTransaction(0, mAddress,
+            String transactionJson = TronLinkSdk.getInstance().createTrxTransaction(mAddress,
                     mToAddress,
-                    0.01, 0, "", "");
+                    0.01, 0);
+            if (transactionJson != null)
+                Log.d(TAG, transactionJson);
+        }
+    }
+
+    /**
+     * trigger contract
+     */
+    private void triggerContract() {
+        if (TextUtils.isEmpty(mAddress)) {
+            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+        } else {
+            String methodName = "transfer";
+            String contractName = "";
+            ArrayList params = new ArrayList();
+            Param param = new Param();
+            param.setParamType(Param.paramType.ADDRESS);
+            param.setParamValue(mToAddress);
+            params.add(param);
+            Param param2 = new Param();
+            param2.setParamType(Param.paramType.DOUBLE);
+            param2.setParamValue("10");
+            params.add(param2);
+            String transactionJson = TronLinkSdk.getInstance().triggerContract(mAddress,
+                    mToAddress, contractName, methodName, params, "1000000",
+                    (long) (0.01*1000000));
             if (transactionJson != null)
                 Log.d(TAG, transactionJson);
         }

@@ -14,10 +14,14 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.tron.wallet.bussiness.sdk.service.ITronSDKInterface;
 import com.tronlink.sdk.bean.Account;
+import com.tronlink.sdk.bean.Param;
 import com.tronlink.sdk.bean.ResourceMessage;
 import com.tronlink.sdk.download.DownLoadActivity;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 import com.tronlink.sdk.utils.AppUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -77,12 +81,12 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public ResourceMessage getResourceMessage() {
+    public ResourceMessage getResourceMessage(String address, boolean isBase58) {
         ResourceMessage resourceMessage = null;
         if (adjustNotEmpty()) {
             String jsonStr = null;
             try {
-                jsonStr = mStub.getResourceMessageJsonStr();
+                jsonStr = mStub.getResourceMessageJsonStr(address, isBase58);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -95,12 +99,12 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public Account getAccount() {
+    public Account getAccount(String address, boolean isBase58) {
         Account account = null;
         if (adjustNotEmpty()) {
             String jsonStr = null;
             try {
-                jsonStr = mStub.getAccountJsonStr();
+                jsonStr = mStub.getAccountJsonStr(address, isBase58);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -114,10 +118,10 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public double getBalanceTrx() {
+    public double getBalanceTrx(String address, boolean isBase58) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.getBalanceTrx();
+                return mStub.getBalanceTrx(address, isBase58);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -126,18 +130,34 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public String createTransaction(int type, String fromAddress, String toAddress, double amount,
-                                    int precision, String id, String contractAddress) {
+    public String createTrxTransaction(String fromAddress, String toAddress, double amount, int precision) {
         if (adjustNotEmpty()) {
             try {
-                if (type == 0) {
-                    return mStub.createTrxTransaction(fromAddress, toAddress, amount, precision);
-                } else if (type == 1) {
-                    return mStub.createTrc10Transaction(fromAddress, toAddress, amount, precision,
-                            id);
-                } else if (type == 2) {
-                    return mStub.createTrc20Transaction(fromAddress, toAddress, amount, precision, contractAddress);
-                }
+                return mStub.createTrxTransaction(fromAddress, toAddress, amount, precision);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String createTrc10Transaction(String fromAddress, String toAddress, double amount, int precision, String id) {
+        if (adjustNotEmpty()) {
+            try {
+                return mStub.createTrc10Transaction(fromAddress, toAddress, amount, precision, id);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String createTrc20Transaction(String fromAddress, String toAddress, double amount, int precision, String contractAddress) {
+        if (adjustNotEmpty()) {
+            try {
+                return mStub.createTrc20Transaction(fromAddress, toAddress, amount, precision, contractAddress);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -158,7 +178,7 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     private boolean adjustNotEmpty() {
-        if(checkIsInstall()) {
+        if (checkIsInstall()) {
             if (mStub == null) {
                 AppUtils.jumpStartInterface(mContext);
                 Log.d(TAG, "mStub is null");
@@ -224,6 +244,22 @@ public class TronLinkSdk implements ITronLinkSdk {
             Intent in = new Intent(activity, DownLoadActivity.class);
             activity.startActivity(in);
         }
+    }
+
+    @Override
+    public String triggerContract(String fromAddress, String toAddress, String contractAddress,
+                                String methodName, List<Param> params,
+                                String freeLimit, long amount) {
+        String json = null;
+        if (params != null)
+            json = new Gson().toJson(params);
+        try {
+            return mStub.triggerContract(fromAddress, toAddress, contractAddress, methodName,
+                    json, freeLimit, amount);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {

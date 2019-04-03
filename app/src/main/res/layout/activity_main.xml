@@ -56,4 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OperationHash" />
+
+    <Button
+        android:id="@+id/bt_triggerContract"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TriggerContract" />
 </LinearLayout>

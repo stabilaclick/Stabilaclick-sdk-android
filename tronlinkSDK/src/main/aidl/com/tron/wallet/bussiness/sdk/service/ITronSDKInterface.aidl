@@ -4,11 +4,11 @@ package com.tron.wallet.bussiness.sdk.service;
 
 interface ITronSDKInterface {
 
-    double getBalanceTrx();
+    double getBalanceTrx(String address,boolean isBase58);
 
-    String getAccountJsonStr();
+    String getAccountJsonStr(String address,boolean isBase58);
 
-    String getResourceMessageJsonStr();
+    String getResourceMessageJsonStr(String address,boolean isBase58);
 
     String createTrxTransaction(String fromAddress,
                                          String toAddress, double amount,
@@ -24,4 +24,7 @@ interface ITronSDKInterface {
                                          String contractAddress);
 
     byte[] hashOperation(String hashStr);
+
+    String triggerContract(String fromAddress, String toAddress, String contractAddress, String methodName,
+                                String paramsJson, String feeLimit, long amount);
 }
