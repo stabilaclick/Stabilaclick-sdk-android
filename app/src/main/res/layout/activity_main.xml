@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/et_to_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bt_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="login" />
+
+    <Button
+        android:id="@+id/bt_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pay" />
+
+    <Button
+        android:id="@+id/bt_getBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="getBalance" />
+
+    <Button
+        android:id="@+id/bt_getAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="getAccount" />
+
+    <Button
+        android:id="@+id/bt_getResourceMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="getResourceMessage" />
+
+    <Button
+        android:id="@+id/bt_createTransation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CreateTransation" />
+
+    <Button
+        android:id="@+id/bt_operationHash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OperationHash" />
+</LinearLayout>
