@@ -25,6 +25,7 @@ import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_RESULT;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_RESULT;
+import static com.tronlink.sdk.TronLinkSdk.INTENT_TRIGGER_CONTRACT_REQUESTCODE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mValueTv;
@@ -79,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (data.getExtras() != null)
                 isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
             Toast.makeText(this, "pay is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
+        } else if (requestCode == INTENT_TRIGGER_CONTRACT_REQUESTCODE) {
+            boolean isSucc = false;
+            if (data.getExtras() != null)
+                isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
+            Toast.makeText(this, "tragger contract is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -144,8 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getBalanceTrx() {
         if (TextUtils.isEmpty(mAddress)) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             final double balance = TronLinkSdk.getInstance().getBalanceTrx(mAddress, true);
             new Handler(getMainLooper()).post(new Runnable() {
                 @Override
@@ -162,8 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getAccount() {
         if (TextUtils.isEmpty(mAddress)) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             new Thread(
             ) {
                 @Override
@@ -188,8 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getResourceMessage() {
         if (TextUtils.isEmpty(mAddress)) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             new Thread(
             ) {
                 @Override
@@ -251,9 +254,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             params.add(param2);
             String transactionJson = TronLinkSdk.getInstance().triggerContract(mAddress,
                     mToAddress, contractName, methodName, params, "1000000",
-                    (long) (0.01*1000000));
+                    (long) (0.01 * 1000000));
             if (transactionJson != null)
                 Log.d(TAG, transactionJson);
+            mTronSdk.goToSignPage(MainActivity.this, transactionJson);
         }
     }
 }

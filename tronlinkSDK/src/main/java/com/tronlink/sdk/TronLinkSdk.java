@@ -20,7 +20,6 @@ import com.tronlink.sdk.download.DownLoadActivity;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 import com.tronlink.sdk.utils.AppUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.BIND_AUTO_CREATE;
@@ -32,9 +31,12 @@ public class TronLinkSdk implements ITronLinkSdk {
     public static final String INTENT_ACTION = "intent_action";
     public static final String INTENT_ACTION_LOGIN = "intent_action_login";
     public static final String INTENT_ACTION_PAY = "intent_action_pay";
+    public static final String INTENT_ACTION_TRIGGER_CONTRACT = "intent_action_trigger_contract";
+
 
     public static final int INTENT_LOGIN_REQUESTCODE = 10001;
     public static final int INTENT_PAY_REQUESTCODE = 10002;
+    public static final int INTENT_TRIGGER_CONTRACT_REQUESTCODE = 10003;
 
 
     private static final String INTENT_PAY_PARAM_TYPE = "intent_param_type";
@@ -47,6 +49,8 @@ public class TronLinkSdk implements ITronLinkSdk {
     private static final String INTENT_PAY_PARAM_ICON = "intent_param_icon";
     private static final String INTENT_PAY_PARAM_AMOUNT = "intent_param_amount";
     private static final String INTENT_PAY_PARAM_PRECISION = "intent_param_precision";
+
+    private static final String INTENT_PARAM_TRIGGER_CONTRACT = "intent_param_trigger_contract";
 
     private static final String ENTER_URI = "tronlink://account/enter";
     private ITronSDKInterface mStub;
@@ -260,6 +264,21 @@ public class TronLinkSdk implements ITronLinkSdk {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void goToSignPage(Activity activity, String transtionJson){
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(ENTER_URI));
+        intent.putExtra(INTENT_ACTION, INTENT_ACTION_TRIGGER_CONTRACT);
+        intent.putExtra(INTENT_PARAM_TRIGGER_CONTRACT, transtionJson);
+        if (AppUtils.isAppInstalled2(activity, intent)) {
+            activity.startActivityForResult(intent, INTENT_TRIGGER_CONTRACT_REQUESTCODE);
+        } else {
+            //未安装app or 版本不支持schema
+            Intent in = new Intent(activity, DownLoadActivity.class);
+            activity.startActivity(in);
+        }
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {

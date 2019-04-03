@@ -44,6 +44,9 @@ public interface ITronLinkSdk {
                String toAddress, double amount, int type, int precision);
 
     String triggerContract(String fromAddress, String toAddress, String contractAddress,
-                         String methodName, List<Param> params,
-                         String freeLimit, long amount);
+                           String methodName, List<Param> params,
+                           String freeLimit, long amount);
+
+    void goToSignPage(Activity activity, String json);
+
 }
