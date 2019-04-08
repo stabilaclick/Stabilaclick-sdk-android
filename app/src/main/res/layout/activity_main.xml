@@ -1,65 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_value"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_to_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/bt_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="login" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="result:" />
 
-    <Button
-        android:id="@+id/bt_pay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pay" />
+            <TextView
+                android:id="@+id/tv_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/bt_getBalance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="getBalance" />
 
-    <Button
-        android:id="@+id/bt_getAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="getAccount" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/bt_getResourceMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="getResourceMessage" />
+            <Button
+                android:id="@+id/bt_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="login" />
 
-    <Button
-        android:id="@+id/bt_createTransation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CreateTransation" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  first you need login，get current account address" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/bt_operationHash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OperationHash" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/bt_triggerContract"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TriggerContract" />
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="to address:  " />
+
+            <EditText
+                android:id="@+id/et_to_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TX2rdGSexVCy6mAgDk3Vgk8La1FuheXTbF"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pay amount:  " />
+
+            <EditText
+                android:id="@+id/et_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_pay_trx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pay_trx" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_pay_trc10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pay_trc10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="trc10 ID: " />
+
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_pay_trc20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pay_trc20" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="trc20 Contract Address: " />
+
+                <EditText
+                    android:id="@+id/et_contractaddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="trc20 precision: " />
+
+                <EditText
+                    android:id="@+id/et_precision"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_getBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="getBalance" />
+
+        <Button
+            android:id="@+id/bt_getAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="getAccount" />
+
+        <Button
+            android:id="@+id/bt_getResourceMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="getResourceMessage" />
+
+        <Button
+            android:id="@+id/bt_operationHash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OperationHash" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_triggerContract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TriggerContract" />
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Trigger Contract Address: " />-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/et_trigger_contractaddress"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Trigger Contract Address: " />-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/et_trigger_contract_methodName"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Trigger Contract Params: " />-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/et_trigger_params"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

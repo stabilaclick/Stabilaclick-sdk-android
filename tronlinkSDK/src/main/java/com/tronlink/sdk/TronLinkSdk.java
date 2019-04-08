@@ -38,17 +38,8 @@ public class TronLinkSdk implements ITronLinkSdk {
     public static final int INTENT_PAY_REQUESTCODE = 10002;
     public static final int INTENT_TRIGGER_CONTRACT_REQUESTCODE = 10003;
 
+    private static final String INTENT_TRANSACTION_BYTES = "intent_transaction_byte";
 
-    private static final String INTENT_PAY_PARAM_TYPE = "intent_param_type";
-    private static final String INTENT_PAY_PARAM_FROM_ADDRESS = "intent_param_fromaddress";
-    private static final String INTENT_PAY_PARAM_TO_ADDRESS = "intent_param_toaddress";
-    private static final String INTENT_PAY_PARAM_ID = "intent_param_id";
-    private static final String INTENT_PAY_PARAM_CONTRACT_ADDRESS = "intent_param_contract_address";
-    private static final String INTENT_PAY_PARAM_TITLE = "intent_param_title";
-    private static final String INTENT_PAY_PARAM_SITE = "intent_param_site";
-    private static final String INTENT_PAY_PARAM_ICON = "intent_param_icon";
-    private static final String INTENT_PAY_PARAM_AMOUNT = "intent_param_amount";
-    private static final String INTENT_PAY_PARAM_PRECISION = "intent_param_precision";
 
     private static final String INTENT_PARAM_TRIGGER_CONTRACT = "intent_param_trigger_contract";
 
@@ -134,10 +125,10 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public String createTrxTransaction(String fromAddress, String toAddress, double amount, int precision) {
+    public byte[] createTrxTransaction(String fromAddress, String toAddress, double amount) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.createTrxTransaction(fromAddress, toAddress, amount, precision);
+                return mStub.createTrxTransaction(fromAddress, toAddress, amount);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -146,10 +137,10 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public String createTrc10Transaction(String fromAddress, String toAddress, double amount, int precision, String id) {
+    public byte[] createTrc10Transaction(String fromAddress, String toAddress, double amount, String id) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.createTrc10Transaction(fromAddress, toAddress, amount, precision, id);
+                return mStub.createTrc10Transaction(fromAddress, toAddress, amount, id);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -158,7 +149,7 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public String createTrc20Transaction(String fromAddress, String toAddress, double amount, int precision, String contractAddress) {
+    public byte[] createTrc20Transaction(String fromAddress, String toAddress, double amount, int precision, String contractAddress) {
         if (adjustNotEmpty()) {
             try {
                 return mStub.createTrc20Transaction(fromAddress, toAddress, amount, precision, contractAddress);
@@ -225,22 +216,11 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public void toPay(Activity activity, String title, String site, String icon,
-                      String id, String contractAddress, String fromAddress,
-                      String toAddress, double amount, int type, int precision) {
+    public void toPay(Activity activity, byte[] transactionBytes) {
         Intent intent = new Intent();
         intent.setData(Uri.parse(ENTER_URI));
         intent.putExtra(INTENT_ACTION, INTENT_ACTION_PAY);
-        intent.putExtra(INTENT_PAY_PARAM_TITLE, title);
-        intent.putExtra(INTENT_PAY_PARAM_SITE, site);
-        intent.putExtra(INTENT_PAY_PARAM_ICON, icon);
-        intent.putExtra(INTENT_PAY_PARAM_ID, id);
-        intent.putExtra(INTENT_PAY_PARAM_CONTRACT_ADDRESS, contractAddress);
-        intent.putExtra(INTENT_PAY_PARAM_FROM_ADDRESS, fromAddress);
-        intent.putExtra(INTENT_PAY_PARAM_TO_ADDRESS, toAddress);
-        intent.putExtra(INTENT_PAY_PARAM_AMOUNT, amount);
-        intent.putExtra(INTENT_PAY_PARAM_TYPE, type);
-        intent.putExtra(INTENT_PAY_PARAM_PRECISION, precision);
+        intent.putExtra(INTENT_TRANSACTION_BYTES, transactionBytes);
         if (AppUtils.isAppInstalled2(activity, intent)) {
             activity.startActivityForResult(intent, INTENT_PAY_REQUESTCODE);
         } else {

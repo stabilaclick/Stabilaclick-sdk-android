@@ -10,15 +10,13 @@ interface ITronSDKInterface {
 
     String getResourceMessageJsonStr(String address,boolean isBase58);
 
-    String createTrxTransaction(String fromAddress,
-                                         String toAddress, double amount,
-                                         int precision);
+    byte[] createTrxTransaction(String fromAddress,
+                                         String toAddress, double amount);
 
-    String createTrc10Transaction(String fromAddress,
-                                    String toAddress, double amount,
-                                    int precision, String id);
+    byte[] createTrc10Transaction(String fromAddress,
+                                    String toAddress, double amount, String id);
 
-    String createTrc20Transaction(String fromAddress,
+    byte[] createTrc20Transaction(String fromAddress,
                                          String toAddress, double amount,
                                          int precision,
                                          String contractAddress);

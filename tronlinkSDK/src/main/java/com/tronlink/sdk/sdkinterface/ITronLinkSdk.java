@@ -22,15 +22,13 @@ public interface ITronLinkSdk {
 
     double getBalanceTrx(String address, boolean isBase58);
 
-    String createTrxTransaction(String fromAddress,
-                                String toAddress, double amount,
-                                int precision);
+    byte[] createTrxTransaction(String fromAddress,
+                                String toAddress, double amount);
 
-    String createTrc10Transaction(String fromAddress,
-                                  String toAddress, double amount,
-                                  int precision, String id);
+    byte[] createTrc10Transaction(String fromAddress,
+                                  String toAddress, double amount, String id);
 
-    String createTrc20Transaction(String fromAddress,
+    byte[] createTrc20Transaction(String fromAddress,
                                   String toAddress, double amount,
                                   int precision,
                                   String contractAddress);
@@ -39,9 +37,7 @@ public interface ITronLinkSdk {
 
     void authLogin(Activity activity);
 
-    void toPay(Activity activity, String title, String site, String icon,
-               String id, String contractAddress, String fromAddress,
-               String toAddress, double amount, int type, int precision);
+    void toPay(Activity activity, byte[] transactionBytes);
 
     String triggerContract(String fromAddress, String toAddress, String contractAddress,
                            String methodName, List<Param> params,

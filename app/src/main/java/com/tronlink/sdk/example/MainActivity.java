@@ -31,11 +31,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mValueTv;
     private String mAddress;
     private static final String TAG = "MainActivity";
-    private String mToAddress = "TX2rdGSexVCy6mAgDk3Vgk8La1FuheXTbF";
-    private double mAmount = 0.01d;
+    private String mToAddress;// = "TX2rdGSexVCy6mAgDk3Vgk8La1FuheXTbF";
+    private double mAmount;// = 0.01d;
+    private int mPrecision;// = 0.01d;
+    private String mContractAddress, mId;
     private ITronLinkSdk mTronSdk;
-    private EditText mToAddressEt;
-
+    private EditText mToAddressEt, mPayAmountEt, mIdEt, mContractAddressEt, mPrecisionEt;
+//                     mTraggerContractAddressEt, mTraggerMethodNameEt, mTraggerParamsEt;
+    private String mTraggerContractAddress, mTraggerMethodName, mTraggerParams;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,23 +46,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTronSdk = TronLinkSdk.getInstance();
         initView();
         initListener();
-        mToAddressEt.setText(mToAddress);
-
     }
 
     private void initView() {
         mValueTv = findViewById(R.id.tv_value);
         mToAddressEt = findViewById(R.id.et_to_address);
+        mPayAmountEt = findViewById(R.id.et_amount);
+        mIdEt = findViewById(R.id.et_id);
+        mContractAddressEt = findViewById(R.id.et_contractaddress);
+        mPrecisionEt = findViewById(R.id.et_precision);
+    }
+
+    private void getValue(){
+        mToAddress = mToAddressEt.getText().toString();
+        if(!TextUtils.isEmpty(mPayAmountEt.getText())){
+            try {
+                mAmount = Double.parseDouble(mPayAmountEt.getText().toString());
+            }catch (Exception e){
+                e.printStackTrace();
+                mAmount = 0;
+            }
+        }
+        if(!TextUtils.isEmpty(mPrecisionEt.getText())){
+            try {
+                mPrecision = Integer.parseInt(mPrecisionEt.getText().toString());
+            }catch (Exception e){
+                e.printStackTrace();
+                mPrecision = 0;
+            }
+        }
+        mContractAddress = mContractAddressEt.getText().toString();
+        mId = mIdEt.getText().toString();
+//        mTraggerContractAddress = mTraggerContractAddressEt.getText().toString();
+//        mTraggerMethodName = mTraggerMethodNameEt.getText().toString();
+//        mTraggerParams = mTraggerParamsEt.getText().toString();
     }
 
     private void initListener() {
         findViewById(R.id.bt_login).setOnClickListener(this);
-        findViewById(R.id.bt_pay).setOnClickListener(this);
+        findViewById(R.id.bt_pay_trx).setOnClickListener(this);
+        findViewById(R.id.bt_pay_trc10).setOnClickListener(this);
+        findViewById(R.id.bt_pay_trc20).setOnClickListener(this);
         findViewById(R.id.bt_getBalance).setOnClickListener(this);
         findViewById(R.id.bt_getAccount).setOnClickListener(this);
         findViewById(R.id.bt_getResourceMessage).setOnClickListener(this);
         findViewById(R.id.bt_operationHash).setOnClickListener(this);
-        findViewById(R.id.bt_createTransation).setOnClickListener(this);
         findViewById(R.id.bt_triggerContract).setOnClickListener(this);
     }
 
@@ -100,8 +131,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_login:
                 login();
                 break;
-            case R.id.bt_pay:
-                pay();
+            case R.id.bt_pay_trx:
+                pay(0);
+                break;
+            case R.id.bt_pay_trc10:
+                pay(1);
+                break;
+            case R.id.bt_pay_trc20:
+                pay(2);
                 break;
             case R.id.bt_getBalance:
                 getBalanceTrx();
@@ -114,9 +151,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_operationHash:
                 operationHash();
-                break;
-            case R.id.bt_createTransation:
-                createTransactionTrx();
                 break;
             case R.id.bt_triggerContract:
                 triggerContract();
@@ -135,12 +169,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * pay
      */
-    private void pay() {
+    private void pay(int type) {
         if (TextUtils.isEmpty(mAddress)) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
-            TronLinkSdk.getInstance().toPay(MainActivity.this, "title", "http://www.baidu.com",
-                    "", "", "", mAddress, mToAddress, mAmount, 0, 0);
+            byte[] transationBytes = createTransactionTrx(type);
+            if (transationBytes != null)
+                TronLinkSdk.getInstance().toPay(MainActivity.this, transationBytes);
         }
     }
 
@@ -222,15 +257,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * create transaction trx
      */
-    private void createTransactionTrx() {
+    private byte[] createTransactionTrx(int type) {
+        getValue();
         if (TextUtils.isEmpty(mAddress)) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+            return null;
         } else {
-            String transactionJson = TronLinkSdk.getInstance().createTrxTransaction(mAddress,
-                    mToAddress,
-                    0.01, 0);
-            if (transactionJson != null)
-                Log.d(TAG, transactionJson);
+            if (type == 0) {
+                return TronLinkSdk.getInstance().createTrxTransaction(mAddress,
+                        mToAddress,
+                        mAmount);
+            } else if (type == 1) {
+                return TronLinkSdk.getInstance().createTrc10Transaction(mAddress,
+                        mToAddress,
+                        mAmount, mId);
+            } else if (type == 2) {
+                return TronLinkSdk.getInstance().createTrc20Transaction(mAddress,
+                        mToAddress,
+                        mAmount, mPrecision, mContractAddress);
+            }
+            return null;
         }
     }
 
@@ -242,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
             String methodName = "transfer";
-            String contractName = "";
+            String contractAddress = "";
             ArrayList params = new ArrayList();
             Param param = new Param();
             param.setParamType(Param.paramType.ADDRESS);
@@ -253,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             param2.setParamValue("10");
             params.add(param2);
             String transactionJson = TronLinkSdk.getInstance().triggerContract(mAddress,
-                    mToAddress, contractName, methodName, params, "1000000",
+                    mToAddress, contractAddress, methodName, params, "1000000",
                     (long) (0.01 * 1000000));
             if (transactionJson != null)
                 Log.d(TAG, transactionJson);
