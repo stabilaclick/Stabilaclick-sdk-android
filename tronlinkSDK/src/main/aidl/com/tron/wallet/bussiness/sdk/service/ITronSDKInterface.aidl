@@ -23,6 +23,6 @@ interface ITronSDKInterface {
 
     byte[] hashOperation(String hashStr);
 
-    String triggerContract(String fromAddress, String toAddress, String contractAddress, String methodName,
+    byte[] triggerContract(String fromAddress, String contractAddress, String methodName,
                                 String paramsJson, String feeLimit, long amount);
 }

@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "pay is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
         } else if (requestCode == INTENT_TRIGGER_CONTRACT_REQUESTCODE) {
             boolean isSucc = false;
-            if (data.getExtras() != null)
+            if (data!=null && data.getExtras() != null)
                 isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
             Toast.makeText(this, "tragger contract is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
         }
@@ -286,11 +286,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * trigger contract
      */
     private void triggerContract() {
+        getValue();
         if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
             String methodName = "transfer";
-            String contractAddress = "";
             ArrayList params = new ArrayList();
             Param param = new Param();
             param.setParamType(Param.paramType.ADDRESS);
@@ -300,12 +300,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             param2.setParamType(Param.paramType.DOUBLE);
             param2.setParamValue("10");
             params.add(param2);
-            String transactionJson = TronLinkSdk.getInstance().triggerContract(mWallet.getAddress(),
-                    mToAddress, contractAddress, methodName, params, "1000000",
+            byte[] transactionBytes = TronLinkSdk.getInstance().triggerContract(mWallet.getAddress(), mContractAddress, methodName, params, "1000000",
                     (long) (0.01 * 1000000));
-            if (transactionJson != null)
-                Log.d(TAG, transactionJson);
-            mTronSdk.toPay(MainActivity.this, transactionJson, mWallet.getName());
+            if(transactionBytes!=null&&transactionBytes.length>0)
+                mTronSdk.toPay(MainActivity.this, transactionBytes, mWallet.getName());
         }
     }
 }

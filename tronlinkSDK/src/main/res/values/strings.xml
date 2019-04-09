@@ -1,7 +1,6 @@
 <resources>
-    <string name="uninstall_tronlink">检测到您当前设备未安装TronLink，下载安装后请您可以快速完成登录或支付。</string>
+    <string name="uninstall_tronlink">Tronlink is not installed on your current device. Please download Tronlink to log in or make a payment.</string>
     <string name="googlePlay_install">Google play</string>
-    <string name="local_install">本地安装</string>
-    <string name="sdk_version_low_tip">当前tronlink版本过低，无法完成登录支付操作，请下载新版本。</string>
-
+    <string name="local_install">Local install</string>
+    <string name="sdk_version_low_tip">Please upgrade your Tronlink to the latest version in order to complete login or payment.</string>
 </resources>

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tron.wallet.bussiness.sdk.service.ITronSDKInterface;
 import com.tronlink.sdk.bean.Account;
 import com.tronlink.sdk.bean.Param;
@@ -22,6 +23,10 @@ import com.tronlink.sdk.download.DownLoadActivity;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 import com.tronlink.sdk.utils.AppFrontBackUtils;
 import com.tronlink.sdk.utils.AppUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -71,7 +76,7 @@ public class TronLinkSdk implements ITronLinkSdk {
             @Override
             public void onFront() {
                 //应用切到前台处理
-                if(mStub==null)
+                if (mStub == null)
                     bindService();
             }
 
@@ -84,7 +89,7 @@ public class TronLinkSdk implements ITronLinkSdk {
 
     }
 
-    private void bindService(){
+    private void bindService() {
         Intent intent = new Intent();
         //由于是隐式启动Service 所以要添加对应的action，A和之前服务端的一样。
         intent.setAction("com.tronlink.wallet.TronSDKService");
@@ -210,10 +215,9 @@ public class TronLinkSdk implements ITronLinkSdk {
         Intent intent = new Intent();
         intent.setData(Uri.parse(ENTER_URI));
         intent.putExtra(INTENT_ACTION, INTENT_ACTION_LOGIN);
-        if(!AppUtils.isAppInstalled(mApplication)){
+        if (!AppUtils.isAppInstalled(mApplication)) {
             goToDownloadPage();
-        }
-        else if (!AppUtils.isAppInstalled2(mApplication, intent)) {
+        } else if (!AppUtils.isAppInstalled2(mApplication, intent)) {
             //未安装app or 版本不支持schema
             goToDownloadPage();
             Toast.makeText(mApplication, mApplication.getResources().getString(R.string.sdk_version_low_tip), Toast.LENGTH_LONG).show();
@@ -222,7 +226,7 @@ public class TronLinkSdk implements ITronLinkSdk {
         return true;
     }
 
-    private void goToDownloadPage(){
+    private void goToDownloadPage() {
         Intent in = new Intent(mApplication, DownLoadActivity.class);
         boolean isActivity = mApplication instanceof Activity;
         if (!isActivity) {
@@ -262,7 +266,7 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public void toPay(Activity activity, String transtionJson, String walletName){
+    public void toPay(Activity activity, String transtionJson, String walletName) {
         Intent intent = new Intent();
         intent.setData(Uri.parse(ENTER_URI));
         intent.putExtra(INTENT_ACTION, INTENT_ACTION_TRIGGER_CONTRACT);
@@ -278,15 +282,28 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public String triggerContract(String fromAddress, String toAddress, String contractAddress,
-                                String methodName, List<Param> params,
-                                String freeLimit, long amount) {
-        String json = null;
-        if (params != null)
-            json = new Gson().toJson(params);
+    public byte[] triggerContract(String fromAddress, String contractAddress,
+                                  String methodName, List<Param> params,
+                                  String freeLimit, long amount) {
+        String jsonStr = "";
+        if (params != null && params.size() > 0) {
+            Gson gson = new Gson();
+            JSONArray paramsArray = new JSONArray();
+            for (int i = 0; i < params.size(); i++) {
+                String accountStr = gson.toJson(params.get(i));
+                JSONObject accountObject;
+                try {
+                    accountObject = new JSONObject(accountStr);
+                    paramsArray.put(i, accountObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            jsonStr = paramsArray.toString();
+        }
         try {
-            return mStub.triggerContract(fromAddress, toAddress, contractAddress, methodName,
-                    json, freeLimit, amount);
+            return mStub.triggerContract(fromAddress, contractAddress, methodName,
+                    jsonStr, freeLimit, amount);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

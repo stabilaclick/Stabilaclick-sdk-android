@@ -42,7 +42,7 @@ public interface ITronLinkSdk {
 
     void toPay(Activity activity, String json, String walletName);
 
-    String triggerContract(String fromAddress, String toAddress, String contractAddress,
+    byte[] triggerContract(String fromAddress, String contractAddress,
                            String methodName, List<Param> params,
                            String freeLimit, long amount);
 }
