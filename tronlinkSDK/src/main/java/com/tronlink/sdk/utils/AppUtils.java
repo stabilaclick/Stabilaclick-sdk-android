@@ -3,12 +3,27 @@ package com.tronlink.sdk.utils;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
 public class AppUtils {
+
+    public static boolean isAppInstalled(Context context) {
+        try {
+            ApplicationInfo info = context.getPackageManager()
+                    .getApplicationInfo("com.tronlink.wallet",
+                            PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
     /**
      * 检测某个应用是否安装
      *
@@ -19,7 +34,6 @@ public class AppUtils {
     public static boolean isAppInstalled2(Context context, Intent intent) {
         return (intent.resolveActivity(context.getPackageManager()) != null);
     }
-
 
     /**
      * Get Mobile Type
@@ -77,6 +91,5 @@ public class AppUtils {
             context.startActivity(intent);
         }
     }
-
 
 }

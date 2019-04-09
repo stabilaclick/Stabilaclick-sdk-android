@@ -55,7 +55,7 @@
                 android:id="@+id/et_to_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TX2rdGSexVCy6mAgDk3Vgk8La1FuheXTbF"/>
+                android:text="THi4mk7bav8PazB2AULAnKkYDCqa1dM9JV"/>
 
         </LinearLayout>
 
@@ -72,7 +72,8 @@
             <EditText
                 android:id="@+id/et_amount"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="0.01"/>
 
         </LinearLayout>
 
@@ -107,7 +108,8 @@
             <EditText
                 android:id="@+id/et_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="1002000"/>
         </LinearLayout>
 
 
@@ -134,7 +136,8 @@
                 <EditText
                     android:id="@+id/et_contractaddress"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="TVwXxvyYawS21PT1B7XZxBZCMbQZLUENoE"/>
             </LinearLayout>
 
             <LinearLayout
@@ -149,7 +152,8 @@
                 <EditText
                     android:id="@+id/et_precision"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="6"/>
             </LinearLayout>
 
         </LinearLayout>

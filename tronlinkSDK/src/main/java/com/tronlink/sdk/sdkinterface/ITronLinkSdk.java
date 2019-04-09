@@ -1,6 +1,7 @@
 package com.tronlink.sdk.sdkinterface;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 
 import com.tronlink.sdk.bean.Account;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface ITronLinkSdk {
 
-    void register(Context context);
+    void register(Application context);
 
     void unRegister(Context context);
 
@@ -37,12 +38,11 @@ public interface ITronLinkSdk {
 
     void authLogin(Activity activity);
 
-    void toPay(Activity activity, byte[] transactionBytes);
+    void toPay(Activity activity, byte[] transactionBytes, String walletName);
+
+    void toPay(Activity activity, String json, String walletName);
 
     String triggerContract(String fromAddress, String toAddress, String contractAddress,
                            String methodName, List<Param> params,
                            String freeLimit, long amount);
-
-    void goToSignPage(Activity activity, String json);
-
 }

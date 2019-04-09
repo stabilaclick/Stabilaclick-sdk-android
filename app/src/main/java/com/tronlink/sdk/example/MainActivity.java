@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tronlink.sdk.TronLinkSdk;
 import com.tronlink.sdk.bean.Account;
 import com.tronlink.sdk.bean.Param;
 import com.tronlink.sdk.bean.ResourceMessage;
+import com.tronlink.sdk.bean.Walllet;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import static com.tronlink.sdk.TronLinkSdk.INTENT_TRIGGER_CONTRACT_REQUESTCODE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mValueTv;
-    private String mAddress;
+    private Walllet mWallet;
     private static final String TAG = "MainActivity";
     private String mToAddress;// = "TX2rdGSexVCy6mAgDk3Vgk8La1FuheXTbF";
     private double mAmount;// = 0.01d;
@@ -98,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == INTENT_LOGIN_REQUESTCODE) {
             if (resultCode == RESULT_OK) {
-                if (data != null && data.getExtras() != null) {
-                    mAddress = data.getStringExtra(INTENT_LOGIN_RESULT);
-                    Toast.makeText(this, "login success, address:" + mAddress, Toast.LENGTH_LONG).show();
+                if (data != null && data.getStringExtra(INTENT_LOGIN_RESULT) != null) {
+                    mWallet = new Gson().fromJson(data.getStringExtra(INTENT_LOGIN_RESULT), Walllet.class);
+                    if(mWallet!=null)
+                        Toast.makeText(this, "login success, address:" + mWallet.getAddress(), Toast.LENGTH_LONG).show();
                 }
             } else {
                 Toast.makeText(this, "login cancel", Toast.LENGTH_LONG).show();
-
             }
         } else if (requestCode == INTENT_PAY_REQUESTCODE) {
             boolean isSucc = false;
@@ -170,12 +172,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * pay
      */
     private void pay(int type) {
-        if (TextUtils.isEmpty(mAddress)) {
+        if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
             byte[] transationBytes = createTransactionTrx(type);
             if (transationBytes != null)
-                TronLinkSdk.getInstance().toPay(MainActivity.this, transationBytes);
+                TronLinkSdk.getInstance().toPay(MainActivity.this, transationBytes, mWallet.getName());
         }
     }
 
@@ -183,14 +185,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * get trx balance
      */
     private void getBalanceTrx() {
-        if (TextUtils.isEmpty(mAddress)) {
+        if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
-            final double balance = TronLinkSdk.getInstance().getBalanceTrx(mAddress, true);
+            final double balance = TronLinkSdk.getInstance().getBalanceTrx(mWallet.getAddress(), true);
             new Handler(getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    mValueTv.setText(balance + " TRX");
+                    mValueTv.setText(balance/1000000 + " TRX");
                 }
             });
         }
@@ -200,14 +202,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * get account info
      */
     private void getAccount() {
-        if (TextUtils.isEmpty(mAddress)) {
+        if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
             new Thread(
             ) {
                 @Override
                 public void run() {
-                    final Account account = TronLinkSdk.getInstance().getAccount(mAddress, true);
+                    final Account account = TronLinkSdk.getInstance().getAccount(mWallet.getAddress(), true);
                     new Handler(getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -225,14 +227,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * get resource message
      */
     private void getResourceMessage() {
-        if (TextUtils.isEmpty(mAddress)) {
+        if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
             new Thread(
             ) {
                 @Override
                 public void run() {
-                    final ResourceMessage resourceMessage = TronLinkSdk.getInstance().getResourceMessage(mAddress, true);
+                    final ResourceMessage resourceMessage = TronLinkSdk.getInstance().getResourceMessage(mWallet.getAddress(), true);
                     new Handler(getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -259,20 +261,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private byte[] createTransactionTrx(int type) {
         getValue();
-        if (TextUtils.isEmpty(mAddress)) {
+        if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
             return null;
         } else {
             if (type == 0) {
-                return TronLinkSdk.getInstance().createTrxTransaction(mAddress,
+                return TronLinkSdk.getInstance().createTrxTransaction(mWallet.getAddress(),
                         mToAddress,
                         mAmount);
             } else if (type == 1) {
-                return TronLinkSdk.getInstance().createTrc10Transaction(mAddress,
+                return TronLinkSdk.getInstance().createTrc10Transaction(mWallet.getAddress(),
                         mToAddress,
                         mAmount, mId);
             } else if (type == 2) {
-                return TronLinkSdk.getInstance().createTrc20Transaction(mAddress,
+                return TronLinkSdk.getInstance().createTrc20Transaction(mWallet.getAddress(),
                         mToAddress,
                         mAmount, mPrecision, mContractAddress);
             }
@@ -284,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * trigger contract
      */
     private void triggerContract() {
-        if (TextUtils.isEmpty(mAddress)) {
+        if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
         } else {
             String methodName = "transfer";
@@ -298,12 +300,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             param2.setParamType(Param.paramType.DOUBLE);
             param2.setParamValue("10");
             params.add(param2);
-            String transactionJson = TronLinkSdk.getInstance().triggerContract(mAddress,
+            String transactionJson = TronLinkSdk.getInstance().triggerContract(mWallet.getAddress(),
                     mToAddress, contractAddress, methodName, params, "1000000",
                     (long) (0.01 * 1000000));
             if (transactionJson != null)
                 Log.d(TAG, transactionJson);
-            mTronSdk.goToSignPage(MainActivity.this, transactionJson);
+            mTronSdk.toPay(MainActivity.this, transactionJson, mWallet.getName());
         }
     }
 }
