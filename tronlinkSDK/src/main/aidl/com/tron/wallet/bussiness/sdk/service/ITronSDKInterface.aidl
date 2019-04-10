@@ -25,4 +25,6 @@ interface ITronSDKInterface {
 
     byte[] triggerContract(String fromAddress, String contractAddress, String methodName,
                                 String paramsJson, String feeLimit, long amount);
+
+    void verifySdk(String packageName, String secret, String appId, String sign);
 }

@@ -14,7 +14,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tron.wallet.bussiness.sdk.service.ITronSDKInterface;
 import com.tronlink.sdk.bean.Account;
 import com.tronlink.sdk.bean.Param;
@@ -23,6 +22,7 @@ import com.tronlink.sdk.download.DownLoadActivity;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 import com.tronlink.sdk.utils.AppFrontBackUtils;
 import com.tronlink.sdk.utils.AppUtils;
+import com.tronlink.sdk.utils.SignUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +57,16 @@ public class TronLinkSdk implements ITronLinkSdk {
     private static final String TAG = "TronLinkSdk";
     private Context mApplication;
 
+    private static final String INTENT_PARAM_PACKAGENAME = "intent_param_packagename";
+    private static final String INTENT_PARAM_SECRET = "intent_param_secret";
+    private static final String INTENT_PARAM_SIGN = "intent_param_sign";
+    private static final String INTENT_PARAM_APPID = "intent_param_appid";
+
+    private String mPackageName = "app_package_nametest";
+    private String mSign = "sdsevhytv";
+    private String mAppId;
+    private String mSecret;
+
     private static class SingletonHolder {
         private static final TronLinkSdk INSTANCE = new TronLinkSdk();
     }
@@ -69,8 +79,12 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
-    public void register(Application application) {
+    public void register(Application application, String appId, String secret) {
         mApplication = application;
+//        mPackageName = AppUtils.getAppName(application);
+        mAppId = appId;
+        mSecret = secret;
+        mSign = SignUtils.getAppSignSha1(application);
         AppFrontBackUtils helper = new AppFrontBackUtils();
         helper.register(application, new AppFrontBackUtils.OnAppStatusListener() {
             @Override
@@ -96,6 +110,13 @@ public class TronLinkSdk implements ITronLinkSdk {
         //android 5.0以后直设置action不能启动相应的服务，需要设置packageName或者Component。
         intent.setPackage("com.tronlink.wallet"); //packageName 需要和服务端的一致.
         mApplication.bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+    }
+
+    private void wrapIntent(Intent intent) {
+        intent.putExtra(INTENT_PARAM_PACKAGENAME, mPackageName);
+        intent.putExtra(INTENT_PARAM_SECRET, mSecret);
+        intent.putExtra(INTENT_PARAM_SIGN, mSign);
+        intent.putExtra(INTENT_PARAM_APPID, mAppId);
     }
 
     @Override
@@ -240,6 +261,7 @@ public class TronLinkSdk implements ITronLinkSdk {
         Intent intent = new Intent();
         intent.setData(Uri.parse(ENTER_URI));
         intent.putExtra(INTENT_ACTION, INTENT_ACTION_LOGIN);
+        wrapIntent(intent);
         if (AppUtils.isAppInstalled2(activity, intent)) {
             activity.startActivityForResult(intent, INTENT_LOGIN_REQUESTCODE);
         } else {
@@ -256,24 +278,9 @@ public class TronLinkSdk implements ITronLinkSdk {
         intent.putExtra(INTENT_ACTION, INTENT_ACTION_PAY);
         intent.putExtra(INTENT_TRANSACTION_BYTES, transactionBytes);
         intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
+        wrapIntent(intent);
         if (AppUtils.isAppInstalled2(activity, intent)) {
             activity.startActivityForResult(intent, INTENT_PAY_REQUESTCODE);
-        } else {
-            //未安装app or 版本不支持schema
-            Intent in = new Intent(activity, DownLoadActivity.class);
-            activity.startActivity(in);
-        }
-    }
-
-    @Override
-    public void toPay(Activity activity, String transtionJson, String walletName) {
-        Intent intent = new Intent();
-        intent.setData(Uri.parse(ENTER_URI));
-        intent.putExtra(INTENT_ACTION, INTENT_ACTION_TRIGGER_CONTRACT);
-        intent.putExtra(INTENT_PARAM_TRIGGER_CONTRACT, transtionJson);
-        intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
-        if (AppUtils.isAppInstalled2(activity, intent)) {
-            activity.startActivityForResult(intent, INTENT_TRIGGER_CONTRACT_REQUESTCODE);
         } else {
             //未安装app or 版本不支持schema
             Intent in = new Intent(activity, DownLoadActivity.class);
@@ -315,7 +322,13 @@ public class TronLinkSdk implements ITronLinkSdk {
         public void onServiceConnected(ComponentName name, IBinder service) {
             //调用asInterface()方法获得IMyAidlInterface实例
             mStub = ITronSDKInterface.Stub.asInterface(service);
-//            mStub.register();
+            try {
+                if (mStub != null)
+                    mStub.verifySdk(mPackageName, mSecret,
+                            mAppId, mSign);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

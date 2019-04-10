@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ITronLinkSdk {
 
-    void register(Application context);
+    void register(Application application, String appId, String secret);
 
     void unRegister(Context context);
 
@@ -39,8 +39,6 @@ public interface ITronLinkSdk {
     void authLogin(Activity activity);
 
     void toPay(Activity activity, byte[] transactionBytes, String walletName);
-
-    void toPay(Activity activity, String json, String walletName);
 
     byte[] triggerContract(String fromAddress, String contractAddress,
                            String methodName, List<Param> params,

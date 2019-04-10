@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String mContractAddress, mId;
     private ITronLinkSdk mTronSdk;
     private EditText mToAddressEt, mPayAmountEt, mIdEt, mContractAddressEt, mPrecisionEt;
-//                     mTraggerContractAddressEt, mTraggerMethodNameEt, mTraggerParamsEt;
-    private String mTraggerContractAddress, mTraggerMethodName, mTraggerParams;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         mContractAddress = mContractAddressEt.getText().toString();
         mId = mIdEt.getText().toString();
-//        mTraggerContractAddress = mTraggerContractAddressEt.getText().toString();
-//        mTraggerMethodName = mTraggerMethodNameEt.getText().toString();
-//        mTraggerParams = mTraggerParamsEt.getText().toString();
     }
 
     private void initListener() {
