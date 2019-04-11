@@ -48,7 +48,6 @@ public class TronLinkSdk implements ITronLinkSdk {
 
     private static final String INTENT_TRANSACTION_BYTES = "intent_transaction_byte";
 
-
     private static final String INTENT_PARAM_TRIGGER_CONTRACT = "intent_param_trigger_contract";
     private static final String INTENT_PARAM_WALLETNAME = "intent_param_wallet_name";
 
@@ -287,6 +286,23 @@ public class TronLinkSdk implements ITronLinkSdk {
             activity.startActivity(in);
         }
     }
+
+    @Override
+    public void toPay(Activity activity, String transtionJson, String walletName) {
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(ENTER_URI));
+        intent.putExtra(INTENT_ACTION, INTENT_ACTION_TRIGGER_CONTRACT);
+        intent.putExtra(INTENT_PARAM_TRIGGER_CONTRACT, transtionJson);
+        intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
+        if (AppUtils.isAppInstalled2(activity, intent)) {
+            activity.startActivityForResult(intent, INTENT_TRIGGER_CONTRACT_REQUESTCODE);
+        } else {
+            //未安装app or 版本不支持schema
+            Intent in = new Intent(activity, DownLoadActivity.class);
+            activity.startActivity(in);
+        }
+    }
+
 
     @Override
     public byte[] triggerContract(String fromAddress, String contractAddress,

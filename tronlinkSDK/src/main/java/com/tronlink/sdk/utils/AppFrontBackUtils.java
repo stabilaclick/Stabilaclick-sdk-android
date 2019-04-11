@@ -33,6 +33,11 @@ public class AppFrontBackUtils {
 
         @Override
         public void onActivityStarted(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
             activityStartCount++;
             //数值从0变到1说明是从后台切到前台
             if (activityStartCount == 1) {
@@ -41,20 +46,11 @@ public class AppFrontBackUtils {
                     mOnAppStatusListener.onFront();
                 }
             }
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
 
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
             activityStartCount--;
             //数值从1到0说明是从前台切到后台
             if (activityStartCount == 0) {
@@ -63,6 +59,11 @@ public class AppFrontBackUtils {
                     mOnAppStatusListener.onBack();
                 }
             }
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
         }
 
         @Override

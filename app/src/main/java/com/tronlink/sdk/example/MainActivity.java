@@ -26,7 +26,6 @@ import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_RESULT;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_RESULT;
-import static com.tronlink.sdk.TronLinkSdk.INTENT_TRIGGER_CONTRACT_REQUESTCODE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mValueTv;
@@ -104,14 +103,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         } else if (requestCode == INTENT_PAY_REQUESTCODE) {
             boolean isSucc = false;
-            if (data.getExtras() != null)
-                isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
-            Toast.makeText(this, "pay is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
-        } else if (requestCode == INTENT_TRIGGER_CONTRACT_REQUESTCODE) {
-            boolean isSucc = false;
             if (data!=null && data.getExtras() != null)
                 isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
-            Toast.makeText(this, "tragger contract is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "pay is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
