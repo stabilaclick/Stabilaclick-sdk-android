@@ -3,12 +3,28 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.tronlink.sdk.example"
+        applicationId "com.tronlink.sdk.example2"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    //设置签名文件
+    signingConfigs {
+        myConfig {
+            storeFile file('tronlink_sdk.jks')
+            storePassword 'tron1234'
+            keyAlias 'tronlinksdk'
+            keyPassword 'tron1234'
+        }
+
+        debug {
+            storeFile file('tronlink_sdk.jks')
+            storePassword 'tron1234'
+            keyAlias 'tronlinksdk'
+            keyPassword 'tron1234'
+        }
     }
     buildTypes {
         release {
@@ -26,4 +42,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(path: ':tronlinkSDK')
+//    implementation 'com.github.TronLink:Tronlink-sdk-android:-SNAPSHOT'
 }

@@ -129,7 +129,13 @@ public class TronLinkSdk implements ITronLinkSdk {
         if (adjustNotEmpty()) {
             String jsonStr = null;
             try {
-                jsonStr = mStub.getResourceMessageJsonStr(address, isBase58);
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    jsonStr = mStub.getResourceMessageJsonStr(address, isBase58);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -147,7 +153,13 @@ public class TronLinkSdk implements ITronLinkSdk {
         if (adjustNotEmpty()) {
             String jsonStr = null;
             try {
-                jsonStr = mStub.getAccountJsonStr(address, isBase58);
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    jsonStr = mStub.getAccountJsonStr(address, isBase58);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -164,7 +176,14 @@ public class TronLinkSdk implements ITronLinkSdk {
     public double getBalanceTrx(String address, boolean isBase58) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.getBalanceTrx(address, isBase58);
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.getBalanceTrx(address, isBase58);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return 0;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -176,7 +195,14 @@ public class TronLinkSdk implements ITronLinkSdk {
     public byte[] createTrxTransaction(String fromAddress, String toAddress, double amount) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.createTrxTransaction(fromAddress, toAddress, amount);
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.createTrxTransaction(fromAddress, toAddress, amount);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return null;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -188,7 +214,14 @@ public class TronLinkSdk implements ITronLinkSdk {
     public byte[] createTrc10Transaction(String fromAddress, String toAddress, double amount, String id) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.createTrc10Transaction(fromAddress, toAddress, amount, id);
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.createTrc10Transaction(fromAddress, toAddress, amount, id);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return null;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -200,7 +233,14 @@ public class TronLinkSdk implements ITronLinkSdk {
     public byte[] createTrc20Transaction(String fromAddress, String toAddress, double amount, int precision, String contractAddress) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.createTrc20Transaction(fromAddress, toAddress, amount, precision, contractAddress);
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.createTrc20Transaction(fromAddress, toAddress, amount, precision, contractAddress);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return null;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -212,7 +252,14 @@ public class TronLinkSdk implements ITronLinkSdk {
     public byte[] hashOperation(String hashStr) {
         if (adjustNotEmpty()) {
             try {
-                return mStub.hashOperation(hashStr);
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.hashOperation(hashStr);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return null;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -339,9 +386,19 @@ public class TronLinkSdk implements ITronLinkSdk {
             //调用asInterface()方法获得IMyAidlInterface实例
             mStub = ITronSDKInterface.Stub.asInterface(service);
             try {
-                if (mStub != null)
+                service.linkToDeath(mDeathRecipient, 0);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
                     mStub.verifySdk(mPackageName, mSecret,
                             mAppId, mSign);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -353,4 +410,16 @@ public class TronLinkSdk implements ITronLinkSdk {
         }
     };
 
+
+    private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
+
+        @Override
+        public void binderDied() {                  // 当绑定的service异常断开连接后，会自动执行此方法
+            Log.e(TAG, "enter Service binderDied ");
+            if (mStub != null) {
+                mStub.asBinder().unlinkToDeath(mDeathRecipient, 0);
+                bindService();
+            }
+        }
+    };
 }
