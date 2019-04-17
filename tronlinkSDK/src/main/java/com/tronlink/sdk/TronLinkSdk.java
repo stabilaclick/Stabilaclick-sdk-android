@@ -39,16 +39,15 @@ public class TronLinkSdk implements ITronLinkSdk {
     public static final String INTENT_ACTION = "intent_action";
     public static final String INTENT_ACTION_LOGIN = "intent_action_login";
     public static final String INTENT_ACTION_PAY = "intent_action_pay";
-    public static final String INTENT_ACTION_TRIGGER_CONTRACT = "intent_action_trigger_contract";
+    public static final String INTENT_ACTION_PAY_JSON = "intent_action_pay_json";
 
 
     public static final int INTENT_LOGIN_REQUESTCODE = 10001;
     public static final int INTENT_PAY_REQUESTCODE = 10002;
     public static final int INTENT_TRIGGER_CONTRACT_REQUESTCODE = 10003;
 
-    private static final String INTENT_TRANSACTION_BYTES = "intent_transaction_byte";
-
-    private static final String INTENT_PARAM_TRIGGER_CONTRACT = "intent_param_trigger_contract";
+    private static final String INTENT_PARAM_TRANSACTION_BYTES = "intent_transaction_byte";
+    private static final String INTENT_PARAM_TRANSACTION_JSON = "intent_transaction_json";
     private static final String INTENT_PARAM_WALLETNAME = "intent_param_wallet_name";
 
     private static final String ENTER_URI = "tronlink://account/enter";
@@ -322,7 +321,7 @@ public class TronLinkSdk implements ITronLinkSdk {
         Intent intent = new Intent();
         intent.setData(Uri.parse(ENTER_URI));
         intent.putExtra(INTENT_ACTION, INTENT_ACTION_PAY);
-        intent.putExtra(INTENT_TRANSACTION_BYTES, transactionBytes);
+        intent.putExtra(INTENT_PARAM_TRANSACTION_BYTES, transactionBytes);
         intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
         wrapIntent(intent);
         if (AppUtils.isAppInstalled2(activity, intent)) {
@@ -338,8 +337,8 @@ public class TronLinkSdk implements ITronLinkSdk {
     public void toPay(Activity activity, String transtionJson, String walletName) {
         Intent intent = new Intent();
         intent.setData(Uri.parse(ENTER_URI));
-        intent.putExtra(INTENT_ACTION, INTENT_ACTION_TRIGGER_CONTRACT);
-        intent.putExtra(INTENT_PARAM_TRIGGER_CONTRACT, transtionJson);
+        intent.putExtra(INTENT_ACTION, INTENT_ACTION_PAY_JSON);
+        intent.putExtra(INTENT_PARAM_TRANSACTION_JSON, transtionJson);
         intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
         if (AppUtils.isAppInstalled2(activity, intent)) {
             activity.startActivityForResult(intent, INTENT_TRIGGER_CONTRACT_REQUESTCODE);
