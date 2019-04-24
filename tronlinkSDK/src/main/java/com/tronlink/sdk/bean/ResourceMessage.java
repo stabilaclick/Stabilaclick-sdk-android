@@ -14,15 +14,70 @@ public class ResourceMessage {
      * TotalEnergyLimit : 100000000000
      * TotalEnergyWeight : 808672148
      */
+    private double freeNetUsed;
+    private double NetUsed;
+    private double NetLimit;
+    private double EnergyUsed;
 
     private double freeNetLimit;
-    private long TotalNetLimit;
-    private long TotalNetWeight;
+    private double TotalNetLimit;
+    private double TotalNetWeight;
     private double EnergyLimit;
-    private long TotalEnergyLimit;
+    private double TotalEnergyLimit;
     private double TotalEnergyWeight;
+    private double storageUsed;
+    private double storageLimit;
+
     private List<AssetNetUsedBean> assetNetUsed;
     private List<AssetNetLimitBean> assetNetLimit;
+
+    public double getFreeNetUsed() {
+        return freeNetUsed;
+    }
+
+    public void setFreeNetUsed(double freeNetUsed) {
+        this.freeNetUsed = freeNetUsed;
+    }
+
+    public double getNetUsed() {
+        return NetUsed;
+    }
+
+    public void setNetUsed(double netUsed) {
+        NetUsed = netUsed;
+    }
+
+    public double getNetLimit() {
+        return NetLimit;
+    }
+
+    public void setNetLimit(double netLimit) {
+        NetLimit = netLimit;
+    }
+
+    public double getEnergyUsed() {
+        return EnergyUsed;
+    }
+
+    public void setEnergyUsed(double energyUsed) {
+        EnergyUsed = energyUsed;
+    }
+
+    public double getStorageUsed() {
+        return storageUsed;
+    }
+
+    public void setStorageUsed(double storageUsed) {
+        this.storageUsed = storageUsed;
+    }
+
+    public double getStorageLimit() {
+        return storageLimit;
+    }
+
+    public void setStorageLimit(double storageLimit) {
+        this.storageLimit = storageLimit;
+    }
 
     public double getFreeNetLimit() {
         return freeNetLimit;
@@ -32,7 +87,7 @@ public class ResourceMessage {
         this.freeNetLimit = freeNetLimit;
     }
 
-    public long getTotalNetLimit() {
+    public double getTotalNetLimit() {
         return TotalNetLimit;
     }
 
@@ -40,7 +95,7 @@ public class ResourceMessage {
         this.TotalNetLimit = TotalNetLimit;
     }
 
-    public long getTotalNetWeight() {
+    public double getTotalNetWeight() {
         return TotalNetWeight;
     }
 
@@ -56,7 +111,7 @@ public class ResourceMessage {
         this.EnergyLimit = EnergyLimit;
     }
 
-    public long getTotalEnergyLimit() {
+    public double getTotalEnergyLimit() {
         return TotalEnergyLimit;
     }
 

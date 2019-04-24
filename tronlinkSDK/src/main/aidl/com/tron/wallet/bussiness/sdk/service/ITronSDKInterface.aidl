@@ -24,7 +24,7 @@ interface ITronSDKInterface {
     byte[] hashOperation(String hashStr);
 
     byte[] triggerContract(String fromAddress, String contractAddress, String methodName,
-                                String paramsJson, String feeLimit, long amount);
+                                String paramsJson, String feeLimit);
 
     void verifySdk(String packageName, String secret, String appId, String sign);
 }

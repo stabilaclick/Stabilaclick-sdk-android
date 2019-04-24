@@ -24,6 +24,10 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,6 +45,11 @@
                 android:text="  first you need login，get current account address" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,9 +64,14 @@
                 android:id="@+id/et_to_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="THi4mk7bav8PazB2AULAnKkYDCqa1dM9JV"/>
+                android:text="THi4mk7bav8PazB2AULAnKkYDCqa1dM9JV" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,9 +87,14 @@
                 android:id="@+id/et_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0.01"/>
+                android:text="0.01" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,6 +107,11 @@
                 android:layout_height="wrap_content"
                 android:text="pay_trx" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,9 +133,13 @@
                 android:id="@+id/et_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1002000"/>
+                android:text="1002000" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -137,7 +165,7 @@
                     android:id="@+id/et_contractaddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TVwXxvyYawS21PT1B7XZxBZCMbQZLUENoE"/>
+                    android:text="TVwXxvyYawS21PT1B7XZxBZCMbQZLUENoE" />
             </LinearLayout>
 
             <LinearLayout
@@ -153,10 +181,15 @@
                     android:id="@+id/et_precision"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="6"/>
+                    android:text="6" />
             </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <Button
             android:id="@+id/bt_getBalance"
@@ -164,11 +197,21 @@
             android:layout_height="wrap_content"
             android:text="getBalance" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
         <Button
             android:id="@+id/bt_getAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="getAccount" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <Button
             android:id="@+id/bt_getResourceMessage"
@@ -176,11 +219,32 @@
             android:layout_height="wrap_content"
             android:text="getResourceMessage" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
         <Button
             android:id="@+id/bt_operationHash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OperationHash" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address that needs to be hashed：" />
+
+        <EditText
+            android:id="@+id/et_need_hashed_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="THi4mk7bav8PazB2AULAnKkYDCqa1dM9JV" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -193,50 +257,81 @@
                 android:layout_height="wrap_content"
                 android:text="TriggerContract" />
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Trigger Contract Address: " />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trigger Contract Address: " />
 
-                <!--<EditText-->
-                    <!--android:id="@+id/et_trigger_contractaddress"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content" />-->
-            <!--</LinearLayout>-->
+                <EditText
+                    android:id="@+id/et_trigger_contractaddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TVwXxvyYawS21PT1B7XZxBZCMbQZLUENoE"/>
+            </LinearLayout>
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Trigger Contract Address: " />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trigger Contract method name: " />
 
-                <!--<EditText-->
-                    <!--android:id="@+id/et_trigger_contract_methodName"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content" />-->
-            <!--</LinearLayout>-->
+                <EditText
+                    android:id="@+id/et_trigger_contract_methodName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="transfer"/>
+            </LinearLayout>
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Trigger Contract Params: " />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trigger Contract Params1 transation to address: " />
 
-                <!--<EditText-->
-                    <!--android:id="@+id/et_trigger_params"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content" />-->
-            <!--</LinearLayout>-->
+                <EditText
+                    android:id="@+id/et_trigger_params1_to_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="THi4mk7bav8PazB2AULAnKkYDCqa1dM9JV"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trigger Contract Params2 transaction token precision: " />
+
+                <EditText
+                    android:id="@+id/et_trigger_params2_precision"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="6"/>
+            </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trigger Contract Params2 transaction token amount: " />
+
+                <EditText
+                    android:id="@+id/et_trigger_params2_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0.01"/>
         </LinearLayout>
 
     </LinearLayout>

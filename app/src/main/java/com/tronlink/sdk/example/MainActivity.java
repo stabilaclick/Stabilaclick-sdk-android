@@ -19,6 +19,7 @@ import com.tronlink.sdk.bean.ResourceMessage;
 import com.tronlink.sdk.bean.Walllet;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,7 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int mPrecision;// = 0.01d;
     private String mContractAddress, mId;
     private ITronLinkSdk mTronSdk;
-    private EditText mToAddressEt, mPayAmountEt, mIdEt, mContractAddressEt, mPrecisionEt;
+    private EditText mToAddressEt, mPayAmountEt, mIdEt, mContractAddressEt, mPrecisionEt, mNeedHashedAddressEt;
+    private EditText mTriggerContractAddressEt, mTriggerContractMethodName, mTriggerContractParam1Et, mTriggerContractParam2PrecisionEt,
+            mTriggerContractParam2AmountEt;
+    private static final String NO_ADDRESS = "Not getting current wallet address";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mIdEt = findViewById(R.id.et_id);
         mContractAddressEt = findViewById(R.id.et_contractaddress);
         mPrecisionEt = findViewById(R.id.et_precision);
+        mNeedHashedAddressEt = findViewById(R.id.et_need_hashed_address);
+
+        mTriggerContractAddressEt = findViewById(R.id.et_trigger_contractaddress);
+        mTriggerContractMethodName = findViewById(R.id.et_trigger_contract_methodName);
+        mTriggerContractParam1Et = findViewById(R.id.et_trigger_params1_to_address);
+        mTriggerContractParam2PrecisionEt = findViewById(R.id.et_trigger_params2_precision);
+        mTriggerContractParam2AmountEt = findViewById(R.id.et_trigger_params2_amount);
     }
 
     private void getValue(){
@@ -161,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void pay(int type) {
         if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
-            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
         } else {
             byte[] transationBytes = createTransactionTrx(type);
             if (transationBytes != null)
@@ -174,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void getBalanceTrx() {
         if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
-            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
         } else {
             final double balance = TronLinkSdk.getInstance().getBalanceTrx(mWallet.getAddress(), true);
             new Handler(getMainLooper()).post(new Runnable() {
@@ -191,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void getAccount() {
         if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
-            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
         } else {
             new Thread(
             ) {
@@ -202,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             if (account != null) {
-                                mValueTv.setText(account.getBalance() + "");
+                                mValueTv.setText(new Gson().toJson(account));
                             }
                         }
                     });
@@ -216,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void getResourceMessage() {
         if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
-            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
         } else {
             new Thread(
             ) {
@@ -227,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             if (resourceMessage != null)
-                                mValueTv.setText(resourceMessage.getTotalEnergyLimit() + "");
+                                mValueTv.setText(new Gson().toJson(resourceMessage));
                         }
                     });
                 }
@@ -241,7 +252,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @return
      */
     private void operationHash() {
-        mValueTv.setText(Arrays.toString(TronLinkSdk.getInstance().hashOperation(mToAddress)));
+        String address = mNeedHashedAddressEt.getText().toString();
+        if(!TextUtils.isEmpty(address)) {
+            mValueTv.setText(Arrays.toString(TronLinkSdk.getInstance().hashOperation(address)));
+        }
+        else {
+            Toast.makeText(MainActivity.this, "The address that needs to be hashed cannot be empty", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -250,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private byte[] createTransactionTrx(int type) {
         getValue();
         if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
-            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
             return null;
         } else {
             if (type == 0) {
@@ -274,22 +291,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * trigger contract
      */
     private void triggerContract() {
-        getValue();
         if (mWallet==null || TextUtils.isEmpty(mWallet.getAddress())) {
-            Toast.makeText(MainActivity.this, "未获取当前钱包地址", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
         } else {
-            String methodName = "transfer";
+            String methodName = mTriggerContractMethodName.getText().toString();
+            String contractAddress = mTriggerContractAddressEt.getText().toString();
+            String toAddress = mTriggerContractParam1Et.getText().toString();
+            int precision = Integer.parseInt(mTriggerContractParam2PrecisionEt.getText().toString());
+            double amount = Double.parseDouble(mTriggerContractParam2AmountEt.getText().toString());
+
             ArrayList params = new ArrayList();
             Param param = new Param();
             param.setParamType(Param.paramType.ADDRESS);
-            param.setParamValue(mToAddress);
+            param.setParamValue(toAddress);
             params.add(param);
             Param param2 = new Param();
             param2.setParamType(Param.paramType.DOUBLE);
-            param2.setParamValue("10");
+            double pow = Math.pow(10, precision);
+            BigDecimal bigDecimal = new BigDecimal(amount * pow);
+            param2.setParamValue(String.valueOf(bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP)));
             params.add(param2);
-            byte[] transactionBytes = TronLinkSdk.getInstance().triggerContract(mWallet.getAddress(), mContractAddress, methodName, params, "1000000",
-                    (long) (0.01 * 1000000));
+            byte[] transactionBytes = TronLinkSdk.getInstance().triggerContract(mWallet.getAddress(), contractAddress, methodName, params, "1000000");
             if(transactionBytes!=null&&transactionBytes.length>0)
                 mTronSdk.toPay(MainActivity.this, transactionBytes, mWallet.getName());
         }

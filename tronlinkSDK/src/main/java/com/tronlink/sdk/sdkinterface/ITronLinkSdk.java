@@ -44,5 +44,5 @@ public interface ITronLinkSdk {
 
     byte[] triggerContract(String fromAddress, String contractAddress,
                            String methodName, List<Param> params,
-                           String freeLimit, long amount);
+                           String freeLimit);
 }

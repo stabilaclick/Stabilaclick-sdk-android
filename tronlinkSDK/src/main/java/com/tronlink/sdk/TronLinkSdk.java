@@ -82,7 +82,7 @@ public class TronLinkSdk implements ITronLinkSdk {
 //        mPackageName = AppUtils.getAppName(application);
         mAppId = appId;
         mSecret = secret;
-        mSign = SignUtils.getAppSignSha1(application);
+        //mSign = SignUtils.getAppSignSha1(application);
         AppFrontBackUtils helper = new AppFrontBackUtils();
         helper.register(application, new AppFrontBackUtils.OnAppStatusListener() {
             @Override
@@ -162,7 +162,7 @@ public class TronLinkSdk implements ITronLinkSdk {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "resourceMessage:" + jsonStr);
+            Log.d(TAG, "getAccount:" + jsonStr);
             if (!TextUtils.isEmpty(jsonStr)) {
                 account = new Gson().fromJson(jsonStr, Account.class);
 
@@ -353,7 +353,7 @@ public class TronLinkSdk implements ITronLinkSdk {
     @Override
     public byte[] triggerContract(String fromAddress, String contractAddress,
                                   String methodName, List<Param> params,
-                                  String freeLimit, long amount) {
+                                  String freeLimit) {
         String jsonStr = "";
         if (params != null && params.size() > 0) {
             Gson gson = new Gson();
@@ -372,7 +372,7 @@ public class TronLinkSdk implements ITronLinkSdk {
         }
         try {
             return mStub.triggerContract(fromAddress, contractAddress, methodName,
-                    jsonStr, freeLimit, amount);
+                    jsonStr, freeLimit);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

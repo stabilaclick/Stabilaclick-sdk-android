@@ -17,12 +17,24 @@ public class Account {
 
     private String address;
     private double balance;
+    private double acquired_delegated_frozen_balance_for_bandwidth;
+    private double delegated_frozen_balance_for_bandwidth;
+    private double allowance;
+    private double latest_withdraw_time;
     private long create_time;
     private long latest_opration_time;
     private long latest_consume_free_time;
+    private double net_usage;
     private AccountResourceBean account_resource;
     private List<AssetV2Bean> assetV2;
+    private List<AssetV2Bean> asset;
     private List<FreeAssetNetUsageV2Bean> free_asset_net_usageV2;
+    private Vote votes;
+    private Frozen frozen;
+    private int type;
+    private String asset_issued_name;
+    private String asset_issued_ID;
+    private Frozen frozen_supply;
 
     public String getAddress() {
         return address;
@@ -86,6 +98,78 @@ public class Account {
 
     public void setFree_asset_net_usageV2(List<FreeAssetNetUsageV2Bean> free_asset_net_usageV2) {
         this.free_asset_net_usageV2 = free_asset_net_usageV2;
+    }
+
+    public double getAcquired_delegated_frozen_balance_for_bandwidth() {
+        return acquired_delegated_frozen_balance_for_bandwidth;
+    }
+
+    public void setAcquired_delegated_frozen_balance_for_bandwidth(double acquired_delegated_frozen_balance_for_bandwidth) {
+        this.acquired_delegated_frozen_balance_for_bandwidth = acquired_delegated_frozen_balance_for_bandwidth;
+    }
+
+    public double getDelegated_frozen_balance_for_bandwidth() {
+        return delegated_frozen_balance_for_bandwidth;
+    }
+
+    public void setDelegated_frozen_balance_for_bandwidth(double delegated_frozen_balance_for_bandwidth) {
+        this.delegated_frozen_balance_for_bandwidth = delegated_frozen_balance_for_bandwidth;
+    }
+
+    public double getAllowance() {
+        return allowance;
+    }
+
+    public void setAllowance(double allowance) {
+        this.allowance = allowance;
+    }
+
+    public double getLatest_withdraw_time() {
+        return latest_withdraw_time;
+    }
+
+    public void setLatest_withdraw_time(double latest_withdraw_time) {
+        this.latest_withdraw_time = latest_withdraw_time;
+    }
+
+    public double getNet_usage() {
+        return net_usage;
+    }
+
+    public void setNet_usage(double net_usage) {
+        this.net_usage = net_usage;
+    }
+
+    public List<AssetV2Bean> getAsset() {
+        return asset;
+    }
+
+    public void setAsset(List<AssetV2Bean> asset) {
+        this.asset = asset;
+    }
+
+    public Vote getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Vote votes) {
+        this.votes = votes;
+    }
+
+    public Frozen getFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(Frozen frozen) {
+        this.frozen = frozen;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public static class AccountResourceBean {
@@ -190,5 +274,71 @@ public class Account {
         public void setValue(double value) {
             this.value = value;
         }
+    }
+
+    public static class Vote {
+        private String vote_address;
+        private double vote_count;
+
+        public String getVote_address() {
+            return vote_address;
+        }
+
+        public void setVote_address(String vote_address) {
+            this.vote_address = vote_address;
+        }
+
+        public double getVote_count() {
+            return vote_count;
+        }
+
+        public void setVote_count(double vote_count) {
+            this.vote_count = vote_count;
+        }
+    }
+
+    public static class Frozen {
+        private double frozen_balance;
+        private double expire_time;
+
+        public double getFrozen_balance() {
+            return frozen_balance;
+        }
+
+        public void setFrozen_balance(double frozen_balance) {
+            this.frozen_balance = frozen_balance;
+        }
+
+        public double getExpire_time() {
+            return expire_time;
+        }
+
+        public void setExpire_time(double expire_time) {
+            this.expire_time = expire_time;
+        }
+    }
+
+    public String getAsset_issued_name() {
+        return asset_issued_name;
+    }
+
+    public void setAsset_issued_name(String asset_issued_name) {
+        this.asset_issued_name = asset_issued_name;
+    }
+
+    public String getAsset_issued_ID() {
+        return asset_issued_ID;
+    }
+
+    public void setAsset_issued_ID(String asset_issued_ID) {
+        this.asset_issued_ID = asset_issued_ID;
+    }
+
+    public Frozen getFrozen_supply() {
+        return frozen_supply;
+    }
+
+    public void setFrozen_supply(Frozen frozen_supply) {
+        this.frozen_supply = frozen_supply;
     }
 }
