@@ -22,7 +22,6 @@ import com.tronlink.sdk.download.DownLoadActivity;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 import com.tronlink.sdk.utils.AppFrontBackUtils;
 import com.tronlink.sdk.utils.AppUtils;
-import com.tronlink.sdk.utils.SignUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,11 +39,13 @@ public class TronLinkSdk implements ITronLinkSdk {
     public static final String INTENT_ACTION_LOGIN = "intent_action_login";
     public static final String INTENT_ACTION_PAY = "intent_action_pay";
     public static final String INTENT_ACTION_PAY_JSON = "intent_action_pay_json";
+    public static final String INTENT_ACTION_PAY_JSON_RETURN_JSON = "intent_action_pay_json_return_json";
 
 
     public static final int INTENT_LOGIN_REQUESTCODE = 10001;
     public static final int INTENT_PAY_REQUESTCODE = 10002;
-    public static final int INTENT_TRIGGER_CONTRACT_REQUESTCODE = 10003;
+    public static final int INTENT_PAY_JSON_REQUESTCODE = 10003;
+    public static final int INTENT_PAY_JSON_RETURN_JSON_REQUESTCODE = 10004;
 
     private static final String INTENT_PARAM_TRANSACTION_BYTES = "intent_transaction_byte";
     private static final String INTENT_PARAM_TRANSACTION_JSON = "intent_transaction_json";
@@ -342,7 +343,24 @@ public class TronLinkSdk implements ITronLinkSdk {
         intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
         wrapIntent(intent);
         if (AppUtils.isAppInstalled2(activity, intent)) {
-            activity.startActivityForResult(intent, INTENT_TRIGGER_CONTRACT_REQUESTCODE);
+            activity.startActivityForResult(intent, INTENT_PAY_JSON_REQUESTCODE);
+        } else {
+            //未安装app or 版本不支持schema
+            Intent in = new Intent(activity, DownLoadActivity.class);
+            activity.startActivity(in);
+        }
+    }
+
+    @Override
+    public void toPayReturnSign(Activity activity, String transtionJson, String walletName) {
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(ENTER_URI));
+        intent.putExtra(INTENT_ACTION, INTENT_ACTION_PAY_JSON_RETURN_JSON);
+        intent.putExtra(INTENT_PARAM_TRANSACTION_JSON, transtionJson);
+        intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
+        wrapIntent(intent);
+        if (AppUtils.isAppInstalled2(activity, intent)) {
+            activity.startActivityForResult(intent, INTENT_PAY_JSON_RETURN_JSON_REQUESTCODE);
         } else {
             //未安装app or 版本不支持schema
             Intent in = new Intent(activity, DownLoadActivity.class);

@@ -195,15 +195,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/bt_pay_json"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PAY_JSON" />
+
+            <Button
+                android:id="@+id/bt_pay_return_json"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAY_RETURN_JSON" />
+
             <EditText
                 android:id="@+id/et_pay_json"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"  />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -291,7 +299,7 @@
                     android:id="@+id/et_trigger_contractaddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TVwXxvyYawS21PT1B7XZxBZCMbQZLUENoE"/>
+                    android:text="TVwXxvyYawS21PT1B7XZxBZCMbQZLUENoE" />
             </LinearLayout>
 
             <LinearLayout
@@ -307,7 +315,7 @@
                     android:id="@+id/et_trigger_contract_methodName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="transfer"/>
+                    android:text="transfer" />
             </LinearLayout>
 
             <LinearLayout
@@ -323,7 +331,7 @@
                     android:id="@+id/et_trigger_params1_to_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="THi4mk7bav8PazB2AULAnKkYDCqa1dM9JV"/>
+                    android:text="THi4mk7bav8PazB2AULAnKkYDCqa1dM9JV" />
             </LinearLayout>
 
             <LinearLayout
@@ -339,20 +347,20 @@
                     android:id="@+id/et_trigger_params2_precision"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="6"/>
+                    android:text="6" />
             </LinearLayout>
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Trigger Contract Params2 transaction token amount: " />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trigger Contract Params2 transaction token amount: " />
 
-                <EditText
-                    android:id="@+id/et_trigger_params2_amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="0.01"/>
+            <EditText
+                android:id="@+id/et_trigger_params2_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0.01" />
         </LinearLayout>
 
     </LinearLayout>

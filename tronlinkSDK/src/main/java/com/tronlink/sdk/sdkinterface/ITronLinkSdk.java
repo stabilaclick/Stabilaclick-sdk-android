@@ -42,6 +42,8 @@ public interface ITronLinkSdk {
 
     void toPay(Activity activity, String json, String walletName);
 
+    void toPayReturnSign(Activity activity, String json, String walletName);
+
     byte[] triggerContract(String fromAddress, String contractAddress,
                            String methodName, List<Param> params,
                            String freeLimit);

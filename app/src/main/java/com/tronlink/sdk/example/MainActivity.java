@@ -25,6 +25,8 @@ import java.util.Arrays;
 
 import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_RESULT;
+import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_JSON_REQUESTCODE;
+import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_JSON_RETURN_JSON_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_RESULT;
 
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPrecisionEt = findViewById(R.id.et_precision);
         mNeedHashedAddressEt = findViewById(R.id.et_need_hashed_address);
         mPayJsonEt = findViewById(R.id.et_pay_json);
-        String str = "{\"txID\":\"8cf4816c98706a1d7cde7bee3e74d7b57f3a0cc35d7bbc791022ac389e1ed6ef\",\"raw_data\":{\"contract\":[{\"parameter\":{\"value\":{\"data\":\"0a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a940000000000000000000000000000000000000000000000000000000000001386\",\"owner_address\":\"41a58269f525bf0bf7a80df7979a4775c6172e796c\",\"contract_address\":\"41b3bddae866b2ce2349bdcb59dfbfa1a75f8552da\",\"call_value\":274999956},\"type_url\":\"type.googleapis.com/protocol.TriggerSmartContract\"},\"type\":\"TriggerSmartContract\"}],\"ref_block_bytes\":\"bb46\",\"ref_block_hash\":\"f6e2284f3ae54ec5\",\"expiration\":1556246946000,\"fee_limit\":1000000000,\"timestamp\":1556246887501},\"raw_data_hex\":\"0a02bb462208f6e2284f3ae54ec540d0c1afbca52d5a9602081f1291020a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412db010a1541a58269f525bf0bf7a80df7979a4775c6172e796c121541b3bddae866b2ce2349bdcb59dfbfa1a75f8552da1894d590830122a4010a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a94000000000000000000000000000000000000000000000000000000000000138670cdf8abbca52d90018094ebdc03\"}";
+        String str = "{\"txID\":\"8cf4816c98706a1d7cde7bee3e74d7b57f3a0cc35d7bbc791022ac389e1ed6ef\",\"raw_data\":{\"contract\":[{\"parameter\":{\"value\":{\"data\":\"0a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a940000000000000000000000000000000000000000000000000000000000001386\",\"owner_address\":\"41a58269f525bf0bf7a80df7979a4775c6172e796c\",\"contract_address\":\"41b3bddae866b2ce2349bdcb59dfbfa1a75f8552da\",\"call_value\":100},\"type_url\":\"type.googleapis.com/protocol.TriggerSmartContract\"},\"type\":\"TriggerSmartContract\"}],\"ref_block_bytes\":\"bb46\",\"ref_block_hash\":\"f6e2284f3ae54ec5\",\"expiration\":1556246946000,\"fee_limit\":1000000000,\"timestamp\":1556246887501},\"raw_data_hex\":\"0a02bb462208f6e2284f3ae54ec540d0c1afbca52d5a9602081f1291020a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412db010a1541a58269f525bf0bf7a80df7979a4775c6172e796c121541b3bddae866b2ce2349bdcb59dfbfa1a75f8552da1894d590830122a4010a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a94000000000000000000000000000000000000000000000000000000000000138670cdf8abbca52d90018094ebdc03\"}";
         mPayJsonEt.setText(str);
 
         mTriggerContractAddressEt = findViewById(R.id.et_trigger_contractaddress);
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.bt_operationHash).setOnClickListener(this);
         findViewById(R.id.bt_triggerContract).setOnClickListener(this);
         findViewById(R.id.bt_pay_json).setOnClickListener(this);
+        findViewById(R.id.bt_pay_return_json).setOnClickListener(this);
     }
 
     @Override
@@ -118,11 +121,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 Toast.makeText(this, "login cancel", Toast.LENGTH_LONG).show();
             }
-        } else if (requestCode == INTENT_PAY_REQUESTCODE) {
+        } else if (requestCode == INTENT_PAY_REQUESTCODE || requestCode == INTENT_PAY_JSON_REQUESTCODE) {
             boolean isSucc = false;
             if (data != null && data.getExtras() != null)
                 isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
             Toast.makeText(this, "pay is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
+        }  else if (requestCode == INTENT_PAY_JSON_RETURN_JSON_REQUESTCODE) {
+            String jsonStr = null;
+            if (data != null && data.getExtras() != null)
+                jsonStr = data.getStringExtra(INTENT_PAY_RESULT);
+            mValueTv.setText(jsonStr);
+            Toast.makeText(this, "return json:"+jsonStr, Toast.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -164,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_pay_json:
                 payJson();
+                break;
+            case R.id.bt_pay_return_json:
+                toPayReturnSign();
                 break;
         }
 
@@ -332,6 +344,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String json = mPayJsonEt.getText().toString();
             if (!TextUtils.isEmpty(json)) {
                 mTronSdk.toPay(MainActivity.this, json, mWallet.getName());
+            }
+        }
+    }
+
+    private void toPayReturnSign() {
+        if (mWallet == null || TextUtils.isEmpty(mWallet.getAddress())) {
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
+        } else {
+            String json = mPayJsonEt.getText().toString();
+            if (!TextUtils.isEmpty(json)) {
+                mTronSdk.toPayReturnSign(MainActivity.this, json, mWallet.getName());
             }
         }
     }
