@@ -340,6 +340,7 @@ public class TronLinkSdk implements ITronLinkSdk {
         intent.putExtra(INTENT_ACTION, INTENT_ACTION_PAY_JSON);
         intent.putExtra(INTENT_PARAM_TRANSACTION_JSON, transtionJson);
         intent.putExtra(INTENT_PARAM_WALLETNAME, walletName);
+        wrapIntent(intent);
         if (AppUtils.isAppInstalled2(activity, intent)) {
             activity.startActivityForResult(intent, INTENT_TRIGGER_CONTRACT_REQUESTCODE);
         } else {
