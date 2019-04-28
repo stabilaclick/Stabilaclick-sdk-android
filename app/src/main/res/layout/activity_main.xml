@@ -106,6 +106,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="pay_trx" />
+
+            <Button
+                android:id="@+id/bt_create_transaction_json_pay_trx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="create_transaction_json_pay_trx" />
         </LinearLayout>
 
         <View
@@ -140,6 +146,12 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#000000" />
+
+        <Button
+            android:id="@+id/bt_create_transaction_json_pay_trc10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="create_transaction_json_pay_trc10" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -183,7 +195,11 @@
                     android:layout_height="wrap_content"
                     android:text="6" />
             </LinearLayout>
-
+            <Button
+                android:id="@+id/bt_create_transaction_json_pay_trc20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pay_create_transaction_json_trc20" />
         </LinearLayout>
 
         <View

@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPrecisionEt = findViewById(R.id.et_precision);
         mNeedHashedAddressEt = findViewById(R.id.et_need_hashed_address);
         mPayJsonEt = findViewById(R.id.et_pay_json);
-        String str = "{\"txID\":\"8cf4816c98706a1d7cde7bee3e74d7b57f3a0cc35d7bbc791022ac389e1ed6ef\",\"raw_data\":{\"contract\":[{\"parameter\":{\"value\":{\"data\":\"0a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a940000000000000000000000000000000000000000000000000000000000001386\",\"owner_address\":\"41a58269f525bf0bf7a80df7979a4775c6172e796c\",\"contract_address\":\"41b3bddae866b2ce2349bdcb59dfbfa1a75f8552da\",\"call_value\":100},\"type_url\":\"type.googleapis.com/protocol.TriggerSmartContract\"},\"type\":\"TriggerSmartContract\"}],\"ref_block_bytes\":\"bb46\",\"ref_block_hash\":\"f6e2284f3ae54ec5\",\"expiration\":1556246946000,\"fee_limit\":1000000000,\"timestamp\":1556246887501},\"raw_data_hex\":\"0a02bb462208f6e2284f3ae54ec540d0c1afbca52d5a9602081f1291020a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412db010a1541a58269f525bf0bf7a80df7979a4775c6172e796c121541b3bddae866b2ce2349bdcb59dfbfa1a75f8552da1894d590830122a4010a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a94000000000000000000000000000000000000000000000000000000000000138670cdf8abbca52d90018094ebdc03\"}";
-        mPayJsonEt.setText(str);
+//        String str = "{\"txID\":\"8cf4816c98706a1d7cde7bee3e74d7b57f3a0cc35d7bbc791022ac389e1ed6ef\",\"raw_data\":{\"contract\":[{\"parameter\":{\"value\":{\"data\":\"0a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a940000000000000000000000000000000000000000000000000000000000001386\",\"owner_address\":\"41a58269f525bf0bf7a80df7979a4775c6172e796c\",\"contract_address\":\"41b3bddae866b2ce2349bdcb59dfbfa1a75f8552da\",\"call_value\":100},\"type_url\":\"type.googleapis.com/protocol.TriggerSmartContract\"},\"type\":\"TriggerSmartContract\"}],\"ref_block_bytes\":\"bb46\",\"ref_block_hash\":\"f6e2284f3ae54ec5\",\"expiration\":1556246946000,\"fee_limit\":1000000000,\"timestamp\":1556246887501},\"raw_data_hex\":\"0a02bb462208f6e2284f3ae54ec540d0c1afbca52d5a9602081f1291020a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412db010a1541a58269f525bf0bf7a80df7979a4775c6172e796c121541b3bddae866b2ce2349bdcb59dfbfa1a75f8552da1894d590830122a4010a7bc885000000000000000000000000d51f8e9d2ef0a7317b758541b0a552706bedb3e80000000000000000000000000000000000000000000000000000000ccf91178000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010642a94000000000000000000000000000000000000000000000000000000000000138670cdf8abbca52d90018094ebdc03\"}";
+//        mPayJsonEt.setText(str);
 
         mTriggerContractAddressEt = findViewById(R.id.et_trigger_contractaddress);
         mTriggerContractMethodName = findViewById(R.id.et_trigger_contract_methodName);
@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.bt_triggerContract).setOnClickListener(this);
         findViewById(R.id.bt_pay_json).setOnClickListener(this);
         findViewById(R.id.bt_pay_return_json).setOnClickListener(this);
+        findViewById(R.id.bt_create_transaction_json_pay_trx).setOnClickListener(this);
+        findViewById(R.id.bt_create_transaction_json_pay_trc10).setOnClickListener(this);
+        findViewById(R.id.bt_create_transaction_json_pay_trc20).setOnClickListener(this);
     }
 
     @Override
@@ -176,6 +179,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_pay_return_json:
                 toPayReturnSign();
+                break;
+            case R.id.bt_create_transaction_json_pay_trx:
+                createTrxTransactionJson(0);
+                break;
+            case R.id.bt_create_transaction_json_pay_trc10:
+                createTrxTransactionJson(1);
+                break;
+            case R.id.bt_create_transaction_json_pay_trc20:
+                createTrxTransactionJson(2);
                 break;
         }
 
@@ -308,6 +320,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
+     * create transaction json trx
+     */
+    private String createTransactionJson(int type) {
+        getValue();
+        if (mWallet == null || TextUtils.isEmpty(mWallet.getAddress())) {
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
+            return null;
+        } else {
+            if (type == 0) {
+                return TronLinkSdk.getInstance().createTrxTransactionJson(mWallet.getAddress(),
+                        mToAddress,
+                        mAmount);
+            } else if (type == 1) {
+                return TronLinkSdk.getInstance().createTrc10TransactionJson(mWallet.getAddress(),
+                        mToAddress,
+                        mAmount, mId);
+            } else if (type == 2) {
+                return TronLinkSdk.getInstance().createTrc20TransactionJson(mWallet.getAddress(),
+                        mToAddress,
+                        mAmount, mPrecision, mContractAddress);
+            }
+            return null;
+        }
+    }
+
+    /**
      * trigger contract
      */
     private void triggerContract() {
@@ -345,6 +383,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!TextUtils.isEmpty(json)) {
                 mTronSdk.toPay(MainActivity.this, json, mWallet.getName());
             }
+            else {
+                Toast.makeText(MainActivity.this, "Not create transaction json", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -356,6 +397,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!TextUtils.isEmpty(json)) {
                 mTronSdk.toPayReturnSign(MainActivity.this, json, mWallet.getName());
             }
+            else {
+                Toast.makeText(MainActivity.this, "Not create transaction json", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void createTrxTransactionJson(int type) {
+        if (mWallet == null || TextUtils.isEmpty(mWallet.getAddress())) {
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
+        } else {
+            String json = createTransactionJson(type);
+            mPayJsonEt.setText(json);
         }
     }
 }

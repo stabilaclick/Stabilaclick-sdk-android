@@ -249,6 +249,63 @@ public class TronLinkSdk implements ITronLinkSdk {
     }
 
     @Override
+    public String createTrxTransactionJson(String fromAddress, String toAddress, double amount) {
+        if (adjustNotEmpty()) {
+            try {
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.createTrxTransactionJson(fromAddress, toAddress, amount);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return null;
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String createTrc10TransactionJson(String fromAddress, String toAddress, double amount, String id) {
+        if (adjustNotEmpty()) {
+            try {
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.createTrc10TransactionJson(fromAddress, toAddress, amount, id);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return null;
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String createTrc20TransactionJson(String fromAddress, String toAddress, double amount, int precision, String contractAddress) {
+        if (adjustNotEmpty()) {
+            try {
+                if (mStub != null && mStub.asBinder().isBinderAlive()) {
+                    return mStub.createTrc20TransactionJson(fromAddress, toAddress, amount, precision, contractAddress);
+                }
+                else {
+                    mStub = null;
+                    bindService();
+                }
+                return null;
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public byte[] hashOperation(String hashStr) {
         if (adjustNotEmpty()) {
             try {

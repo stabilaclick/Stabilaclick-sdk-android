@@ -34,6 +34,17 @@ public interface ITronLinkSdk {
                                   int precision,
                                   String contractAddress);
 
+    String createTrxTransactionJson(String fromAddress,
+                                    String toAddress, double amount);
+
+    String createTrc10TransactionJson(String fromAddress,
+                                      String toAddress, double amount, String id);
+
+    String createTrc20TransactionJson(String fromAddress,
+                                      String toAddress, double amount,
+                                      int precision,
+                                      String contractAddress);
+
     byte[] hashOperation(String hashStr);
 
     void authLogin(Activity activity);
