@@ -22,6 +22,7 @@ import com.tronlink.sdk.download.DownLoadActivity;
 import com.tronlink.sdk.sdkinterface.ITronLinkSdk;
 import com.tronlink.sdk.utils.AppFrontBackUtils;
 import com.tronlink.sdk.utils.AppUtils;
+import com.tronlink.sdk.utils.SignUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,8 +62,8 @@ public class TronLinkSdk implements ITronLinkSdk {
     private static final String INTENT_PARAM_SIGN = "intent_param_sign";
     private static final String INTENT_PARAM_APPID = "intent_param_appid";
 
-    private String mPackageName = "app_package_nametest";
-    private String mSign = "sdsevhytv";
+    private String mPackageName;  //= "app_package_nametest";
+    private String mSign;// = "sdsevhytv";
     private String mAppId;
     private String mSecret;
 
@@ -80,10 +81,10 @@ public class TronLinkSdk implements ITronLinkSdk {
     @Override
     public void register(Application application, String appId, String secret) {
         mApplication = application;
-//        mPackageName = AppUtils.getAppName(application);
+        mPackageName = AppUtils.getAppName(application);
         mAppId = appId;
         mSecret = secret;
-        //mSign = SignUtils.getAppSignSha1(application);
+        mSign = SignUtils.getAppSignSha1(application);
         AppFrontBackUtils helper = new AppFrontBackUtils();
         helper.register(application, new AppFrontBackUtils.OnAppStatusListener() {
             @Override
