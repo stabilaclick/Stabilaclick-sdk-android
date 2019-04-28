@@ -29,12 +29,12 @@ public class Account {
     private List<AssetV2Bean> assetV2;
     private List<AssetV2Bean> asset;
     private List<FreeAssetNetUsageV2Bean> free_asset_net_usageV2;
-    private Vote votes;
-    private Frozen frozen;
+    private List<Vote> votes;
+    private List<Frozen> frozen;
     private int type;
     private String asset_issued_name;
     private String asset_issued_ID;
-    private Frozen frozen_supply;
+    private List<Frozen> frozen_supply;
 
     public String getAddress() {
         return address;
@@ -148,19 +148,19 @@ public class Account {
         this.asset = asset;
     }
 
-    public Vote getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void setVotes(Vote votes) {
+    public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 
-    public Frozen getFrozen() {
+    public List<Frozen> getFrozen() {
         return frozen;
     }
 
-    public void setFrozen(Frozen frozen) {
+    public void setFrozen(List<Frozen> frozen) {
         this.frozen = frozen;
     }
 
@@ -334,11 +334,11 @@ public class Account {
         this.asset_issued_ID = asset_issued_ID;
     }
 
-    public Frozen getFrozen_supply() {
+    public List<Frozen> getFrozen_supply() {
         return frozen_supply;
     }
 
-    public void setFrozen_supply(Frozen frozen_supply) {
+    public void setFrozen_supply(List<Frozen> frozen_supply) {
         this.frozen_supply = frozen_supply;
     }
 }
