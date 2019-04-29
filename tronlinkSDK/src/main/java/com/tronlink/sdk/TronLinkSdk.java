@@ -81,7 +81,7 @@ public class TronLinkSdk implements ITronLinkSdk {
     @Override
     public void register(Application application, String appId, String secret) {
         mApplication = application;
-        mPackageName = AppUtils.getAppName(application);
+        mPackageName = AppUtils.getPackageName(application);
         mAppId = appId;
         mSecret = secret;
         mSign = SignUtils.getAppSignSha1(application);
