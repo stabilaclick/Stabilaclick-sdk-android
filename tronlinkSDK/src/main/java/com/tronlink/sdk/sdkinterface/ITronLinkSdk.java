@@ -2,8 +2,6 @@ package com.tronlink.sdk.sdkinterface;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
-
 import com.tronlink.sdk.bean.Account;
 import com.tronlink.sdk.bean.Param;
 import com.tronlink.sdk.bean.ResourceMessage;
@@ -14,8 +12,6 @@ import java.util.List;
 public interface ITronLinkSdk {
 
     void register(Application application, String appId, String secret);
-
-    void unRegister(Context context);
 
     ResourceMessage getResourceMessage(String address, boolean isBase58);
 
@@ -57,5 +53,5 @@ public interface ITronLinkSdk {
 
     byte[] triggerContract(String fromAddress, String contractAddress,
                            String methodName, List<Param> params,
-                           String freeLimit);
+                           String feeLimit);
 }

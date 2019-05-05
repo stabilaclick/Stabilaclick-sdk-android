@@ -119,10 +119,10 @@ public class TronLinkSdk implements ITronLinkSdk {
         intent.putExtra(INTENT_PARAM_APPID, mAppId);
     }
 
-    @Override
-    public void unRegister(Context context) {
-        context.unbindService(serviceConnection);
-    }
+//    @Override
+//    public void unRegister(Context context) {
+//        context.unbindService(serviceConnection);
+//    }
 
     @Override
     public ResourceMessage getResourceMessage(String address, boolean isBase58) {
@@ -430,7 +430,7 @@ public class TronLinkSdk implements ITronLinkSdk {
     @Override
     public byte[] triggerContract(String fromAddress, String contractAddress,
                                   String methodName, List<Param> params,
-                                  String freeLimit) {
+                                  String feeLimit) {
         String jsonStr = "";
         if (params != null && params.size() > 0) {
             Gson gson = new Gson();
@@ -449,7 +449,7 @@ public class TronLinkSdk implements ITronLinkSdk {
         }
         try {
             return mStub.triggerContract(fromAddress, contractAddress, methodName,
-                    jsonStr, freeLimit);
+                    jsonStr, feeLimit);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
