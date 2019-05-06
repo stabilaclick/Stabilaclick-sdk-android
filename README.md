@@ -1,4 +1,7 @@
-## TronLinkSDK-Android Access document 
+## TronLinkSDK-Android Access document
+[![](https://jitpack.io/v/TronLink/Tronlink-sdk-android.svg)](https://jitpack.io/#TronLink/Tronlink-sdk-android)
+
+> [中文文档](README_zh.md)
 #### Description：
 1. TronLinkSDK-Android  is a tool that helps third-party apps simplify account-level operations and provide core wallet logic for queries, transactions, signatures, etc.
 2. TronLinkSDK-Android will provide the corresponding aar package, you can choose the way to introduce online (...), or put the aar package we provide into the corresponding Studio - lib directory, please see us for detailed access. Official demo provided
