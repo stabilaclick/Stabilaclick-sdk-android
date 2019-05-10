@@ -34,7 +34,7 @@ import static android.content.Context.BIND_AUTO_CREATE;
 
 public class TronLinkSdk implements ITronLinkSdk {
     public static final String INTENT_LOGIN_RESULT = "intent_address_result";
-    public static final String INTENT_PAY_RESULT = "pay_result";//1是白名单
+    public static final String INTENT_PAY_RESULT = "pay_result";
 
     public static final String INTENT_ACTION = "intent_action";
     public static final String INTENT_ACTION_LOGIN = "intent_action_login";
@@ -61,6 +61,8 @@ public class TronLinkSdk implements ITronLinkSdk {
     private static final String INTENT_PARAM_SECRET = "intent_param_secret";
     private static final String INTENT_PARAM_SIGN = "intent_param_sign";
     private static final String INTENT_PARAM_APPID = "intent_param_appid";
+
+    public static final String INTENT_PAY_IS_NOT_TRANSACTION_RESULT = "pay_is_not_transaction_result";
 
     private String mPackageName;  //= "app_package_nametest";
     private String mSign;// = "sdsevhytv";
@@ -425,7 +427,6 @@ public class TronLinkSdk implements ITronLinkSdk {
             activity.startActivity(in);
         }
     }
-
 
     @Override
     public byte[] triggerContract(String fromAddress, String contractAddress,

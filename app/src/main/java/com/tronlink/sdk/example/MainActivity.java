@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_LOGIN_RESULT;
+import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_IS_NOT_TRANSACTION_RESULT;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_JSON_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_JSON_RETURN_JSON_REQUESTCODE;
 import static com.tronlink.sdk.TronLinkSdk.INTENT_PAY_REQUESTCODE;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ITronLinkSdk mTronSdk;
     private EditText mToAddressEt, mPayAmountEt, mIdEt, mContractAddressEt, mPrecisionEt, mNeedHashedAddressEt;
     private EditText mTriggerContractAddressEt, mTriggerContractMethodName, mTriggerContractParam1Et, mTriggerContractParam2PrecisionEt,
-            mTriggerContractParam2AmountEt, mPayJsonEt;
+            mTriggerContractParam2AmountEt, mPayJsonEt, mSignStrReturnEt;
     private static final String NO_ADDRESS = "Not getting current wallet address";
 
     @Override
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTriggerContractParam1Et = findViewById(R.id.et_trigger_params1_to_address);
         mTriggerContractParam2PrecisionEt = findViewById(R.id.et_trigger_params2_precision);
         mTriggerContractParam2AmountEt = findViewById(R.id.et_trigger_params2_amount);
+        mSignStrReturnEt = findViewById(R.id.et_sign_str_return);
 
     }
 
@@ -110,33 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.bt_create_transaction_json_pay_trx).setOnClickListener(this);
         findViewById(R.id.bt_create_transaction_json_pay_trc10).setOnClickListener(this);
         findViewById(R.id.bt_create_transaction_json_pay_trc20).setOnClickListener(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == INTENT_LOGIN_REQUESTCODE) {
-            if (resultCode == RESULT_OK) {
-                if (data != null && data.getStringExtra(INTENT_LOGIN_RESULT) != null) {
-                    mWallet = new Gson().fromJson(data.getStringExtra(INTENT_LOGIN_RESULT), Walllet.class);
-                    if (mWallet != null)
-                        Toast.makeText(this, "login success, address:" + mWallet.getAddress(), Toast.LENGTH_LONG).show();
-                }
-            } else {
-                Toast.makeText(this, "login cancel", Toast.LENGTH_LONG).show();
-            }
-        } else if (requestCode == INTENT_PAY_REQUESTCODE || requestCode == INTENT_PAY_JSON_REQUESTCODE) {
-            boolean isSucc = false;
-            if (data != null && data.getExtras() != null)
-                isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
-            Toast.makeText(this, "pay is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
-        }  else if (requestCode == INTENT_PAY_JSON_RETURN_JSON_REQUESTCODE) {
-            String jsonStr = null;
-            if (data != null && data.getExtras() != null)
-                jsonStr = data.getStringExtra(INTENT_PAY_RESULT);
-            mValueTv.setText(jsonStr);
-            Toast.makeText(this, "return json:"+jsonStr, Toast.LENGTH_LONG).show();
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+        findViewById(R.id.bt_sign_str_return).setOnClickListener(this);
     }
 
     @Override
@@ -188,6 +164,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_create_transaction_json_pay_trc20:
                 createTrxTransactionJson(2);
+                break;
+            case R.id.bt_sign_str_return:
+                toSignStrReturn();
                 break;
         }
 
@@ -403,6 +382,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void toSignStrReturn() {
+        if (mWallet == null || TextUtils.isEmpty(mWallet.getAddress())) {
+            Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
+        } else {
+            String unSignStr = mSignStrReturnEt.getText().toString();
+            if (!TextUtils.isEmpty(unSignStr)) {
+                mTronSdk.toPayReturnSign(MainActivity.this, unSignStr, mWallet.getName());
+            }
+            else {
+                Toast.makeText(MainActivity.this, "unsign string is empty", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     private void createTrxTransactionJson(int type) {
         if (mWallet == null || TextUtils.isEmpty(mWallet.getAddress())) {
             Toast.makeText(MainActivity.this, NO_ADDRESS, Toast.LENGTH_LONG).show();
@@ -411,4 +404,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mPayJsonEt.setText(json);
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == INTENT_LOGIN_REQUESTCODE) {
+            if (resultCode == RESULT_OK) {
+                if (data != null && data.getStringExtra(INTENT_LOGIN_RESULT) != null) {
+                    mWallet = new Gson().fromJson(data.getStringExtra(INTENT_LOGIN_RESULT), Walllet.class);
+                    if (mWallet != null)
+                        Toast.makeText(this, "login success, address:" + mWallet.getAddress(), Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "login cancel", Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == INTENT_PAY_REQUESTCODE || requestCode == INTENT_PAY_JSON_REQUESTCODE) {
+            boolean isSucc = false;
+            if (data != null && data.getExtras() != null)
+                isSucc = data.getBooleanExtra(INTENT_PAY_RESULT, false);
+            Toast.makeText(this, "pay is " + (isSucc ? "success" : "fail"), Toast.LENGTH_LONG).show();
+        }  else if (requestCode == INTENT_PAY_JSON_RETURN_JSON_REQUESTCODE) {
+            String jsonStr = null;
+            boolean isNotTransaction = false;
+            if (data != null && data.getExtras() != null) {
+                jsonStr = data.getStringExtra(INTENT_PAY_RESULT);
+                isNotTransaction = data.getBooleanExtra(INTENT_PAY_IS_NOT_TRANSACTION_RESULT, false);
+            }
+            mValueTv.setText(jsonStr);
+            if(isNotTransaction){
+                Toast.makeText(this, "return signed str:" + jsonStr, Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(this, "return json:" + jsonStr, Toast.LENGTH_LONG).show();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

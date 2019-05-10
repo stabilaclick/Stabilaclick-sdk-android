@@ -195,6 +195,7 @@
                     android:layout_height="wrap_content"
                     android:text="6" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/bt_create_transaction_json_pay_trc20"
                 android:layout_width="wrap_content"
@@ -230,6 +231,23 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000" />
+
+        <Button
+            android:id="@+id/bt_sign_str_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SIGN_STR_RETURN" />
+
+        <EditText
+            android:id="@+id/et_sign_str_return"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0x68656c6c6f20776f726c64"/>
 
         <View
             android:layout_width="match_parent"
@@ -304,7 +322,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -320,7 +339,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -336,7 +356,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -352,7 +373,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
