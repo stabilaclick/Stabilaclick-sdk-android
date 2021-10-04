@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.stabilaclick.sdk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:largeHeap="true"
+        android:supportsRtl="true">
+        <activity
+            android:name=".download.DownLoadActivity"
+            android:alwaysRetainTaskState="true"
+            android:screenOrientation="portrait"></activity>
+    </application>
+</manifest>

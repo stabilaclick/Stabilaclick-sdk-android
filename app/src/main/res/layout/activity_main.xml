@@ -102,16 +102,16 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/bt_pay_trx"
+                android:id="@+id/bt_pay_stb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="pay_trx" />
+                android:text="pay_stb" />
 
             <Button
-                android:id="@+id/bt_create_transaction_json_pay_trx"
+                android:id="@+id/bt_create_transaction_json_pay_stb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="create_transaction_json_pay_trx" />
+                android:text="create_transaction_json_pay_stb" />
         </LinearLayout>
 
         <View

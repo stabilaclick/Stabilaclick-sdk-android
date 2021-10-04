@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.tronlink.sdk.example"
+        applicationId "com.stabilaclick.sdk.example"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -13,17 +13,17 @@ android {
     //设置签名文件
     signingConfigs {
         myConfig {
-            storeFile file('tronlink_sdk.jks')
-            storePassword 'tron1234'
-            keyAlias 'tronlinksdk'
-            keyPassword 'tron1234'
+            storeFile file('stabilaclcik_sdk.jks')
+            storePassword 'stabila1234'
+            keyAlias 'stabilaclicksdk'
+            keyPassword 'stabila1234'
         }
 
         debug {
-            storeFile file('tronlink_sdk.jks')
-            storePassword 'tron1234'
-            keyAlias 'tronlinksdk'
-            keyPassword 'tron1234'
+            storeFile file('stabilaclcik_sdk.jks')
+            storePassword 'stabila1234'
+            keyAlias 'stabilaclicksdk'
+            keyPassword 'stabila1234'
         }
     }
     buildTypes {
@@ -41,6 +41,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation project(path: ':tronlinkSDK')
-//    implementation 'com.github.TronLink:Tronlink-sdk-android:-SNAPSHOT'
+    implementation project(path: ':stabilaclickSDK')
+//    implementation 'com.github.StabilaClick:Stabilaclick-sdk-android:-SNAPSHOT'
 }

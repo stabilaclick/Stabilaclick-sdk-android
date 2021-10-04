@@ -1,0 +1,7 @@
+<resources>
+    <string name="uninstall_stabilaclick">检测到您当前设备未安装StabilaClick，下载安装后请您可以快速完成登录或支付。</string>
+    <string name="googlePlay_install">Google play</string>
+    <string name="local_install">本地安装</string>
+    <string name="sdk_version_low_tip">当前stabilaclick版本过低，无法完成登录支付操作，请下载新版本。</string>
+
+</resources>

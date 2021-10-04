@@ -1,31 +1,31 @@
-## TronLinkSDK-Android Access document
-[![](https://jitpack.io/v/TronLink/Tronlink-sdk-android.svg)](https://jitpack.io/#TronLink/Tronlink-sdk-android)
+## StabilaClickSDK-Android Access document
+[![](https://jitpack.io/v/StabilaClick/Stabilaclick-sdk-android.svg)](https://jitpack.io/#StabilaClick/Stabilaclick-sdk-android)
 
 > [中文文档](README_zh.md)
 #### Description：
-1. TronLinkSDK-Android  is a tool that helps third-party apps simplify account-level operations and provide core wallet logic for queries, transactions, signatures, etc.
-2. TronLinkSDK-Android will provide the corresponding aar package, you can choose the way to introduce online (...), or put the aar package we provide into the corresponding Studio - lib directory, please see us for detailed access. Official demo provided
-3. TronLinkSDK-Android will restore the syntax of Tron-web as much as possible. We will provide interface - ITronLinkSdk to streamline the operation and explain the fields.
+1. StabilaClickSDK-Android  is a tool that helps third-party apps simplify account-level operations and provide core wallet logic for queries, transactions, signatures, etc.
+2. StabilaClickSDK-Android will provide the corresponding aar package, you can choose the way to introduce online (...), or put the aar package we provide into the corresponding Studio - lib directory, please see us for detailed access. Official demo provided
+3. StabilaClickSDK-Android will restore the syntax of Stabila-web as much as possible. We will provide interface - IStabilaClickSdk to streamline the operation and explain the fields.
 ----
 
 #### API列表
 1. void register(Context context);
 - Interpretation: This method needs to be called when the project starts, in order to establish a channel
 - Method call:
-`TronLinkSdk.getInstance().register(this);`
+`StabilaClickSdk.getInstance().register(this);`
 
 
  2. void authLogin(Activity activity);
  - Interpretation: Jump account login page, select wallet address
  - Method call：
-`TronLinkSdk.getInstance().authLogin(MainActivity.this);`
+`StabilaClickSdk.getInstance().authLogin(MainActivity.this);`
 
 3. ResourceMessage getResourceMessage(String address,boolean isBase58);
 - Interpretation: query network resources under any address
 - Parameter 1 address: current wallet address
 - Parameter 2 isBase58 Whether to hash code the wallet address, generally pass true
 - Method call：
-`ResourceMessage resourceMessage = TronLinkSdk.getInstance().getResourceMessage(mAddress, true);
+`ResourceMessage resourceMessage = StabilaClickSdk.getInstance().getResourceMessage(mAddress, true);
 `
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
@@ -34,26 +34,26 @@
 - Parameter 1 address: current wallet address
 - Parameter 2 isBase58 Whether to hash code the wallet address, generally pass true
 - Method call：
-`TronLinkSdk.getInstance().getAccount(mAddress, true);`
+`StabilaClickSdk.getInstance().getAccount(mAddress, true);`
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
-5. double getBalanceTrx(String address,boolean isBase58);
-- Interpretation: Query the TRX balance at any address, unit: sun
+5. double getBalanceStb(String address,boolean isBase58);
+- Interpretation: Query the STB balance at any address, unit: unit
 - Parameter 1 address: current wallet address
 - Parameter 2 isBase58 Whether to hash code the wallet address, generally pass true
 - Method call：
-`TronLinkSdk.getInstance().getBalanceTrx(mAddress, true);` 
+`StabilaClickSdk.getInstance().getBalanceStb(mAddress, true);` 
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
-6. byte[] createTrxTransaction(String fromAddress,  
+6. byte[] createStbTransaction(String fromAddress,  
 String toAddress,  
 double amount); 
-- Interpretation: Create a Trx transfer transaction, return as a byte array
+- Interpretation: Create a Stb transfer transaction, return as a byte array
 - Parameter 1 fromAddress: Current wallet address
 - Parameter 2 toAddress: Receiver wallet address
 - Parameter 3 amount: Transfer amount
 - Method call：
-`byte[] transationBytes = TronLinkSdk.getInstance().createTrxTransaction(mAddress, 
+`byte[] transationBytes = StabilaClickSdk.getInstance().createStbTransaction(mAddress, 
 mToAddress, 
 mAmount);
 `
@@ -66,7 +66,7 @@ mAmount);
 - Parameter 3 amount: Transfer amount
 - Parameter 4 id: ID of TRC10
 - Method call：
-`byte[] transationBytes = TronLinkSdk.getInstance().createTrc10Transaction(mAddress, mToAddress, mAmount, mId);
+`byte[] transationBytes = StabilaClickSdk.getInstance().createTrc10Transaction(mAddress, mToAddress, mAmount, mId);
 `
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
@@ -83,19 +83,19 @@ String contractAddress
 - Parameter 4 precision: token precision
 - Parameter 5 contractAddress: contract address
 - Method call：
-`byte[] transationBytes=TronLinkSdk.getInstance().createTrc20Transaction(mAddress,mToAddress, mAmount, mPrecision, mContractAddress); `
+`byte[] transationBytes=StabilaClickSdk.getInstance().createTrc20Transaction(mAddress,mToAddress, mAmount, mPrecision, mContractAddress); `
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
 
-9. String createTrxTransactionJson(String fromAddress,  
+9. String createStbTransactionJson(String fromAddress,  
 String toAddress,  
 double amount); 
-- Interpretation: Create a Trx transfer transaction, return as a json string
+- Interpretation: Create a Stb transfer transaction, return as a json string
 - Parameter 1 fromAddress: Current wallet address
 - Parameter 2 toAddress: Receiver wallet address
 - Parameter 3 amount: Transfer amount
 - Method call：
-`String transactionJson = TronLinkSdk.getInstance().createTrxTransactionJson(mAddress, 
+`String transactionJson = StabilaClickSdk.getInstance().createStbTransactionJson(mAddress, 
 mToAddress, 
 mAmount);
 `
@@ -108,7 +108,7 @@ mAmount);
 - Parameter 3 amount: Transfer amount
 - Parameter 4 id: ID of TRC10
 - Method call：
-`String transactionJson= TronLinkSdk.getInstance().createTrc10TransactionJson(mAddress, mToAddress, mAmount, mId);
+`String transactionJson= StabilaClickSdk.getInstance().createTrc10TransactionJson(mAddress, mToAddress, mAmount, mId);
 `
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
@@ -125,7 +125,7 @@ String contractAddress
 - Parameter 4 precision: token precision
 - Parameter 5 contractAddress: contract address
 - Method call：
-`String transactionJson=TronLinkSdk.getInstance().createTrc20TransactionJson(mAddress,mToAddress, mAmount, mPrecision, mContractAddress); `
+`String transactionJson=StabilaClickSdk.getInstance().createTrc20TransactionJson(mAddress,mToAddress, mAmount, mPrecision, mContractAddress); `
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
 
@@ -133,7 +133,7 @@ String contractAddress
 - Interpretation: hash operation on wallet address and return as byte array
 - Parameter 1 hashStr: Wallet address for which hash operation is required
 - Method call：
-`String hashAddress = TronLinkSdk.getInstance().hashOperation(address))`
+`String hashAddress = StabilaClickSdk.getInstance().hashOperation(address))`
 - Note: This function is a time-consuming operation and is recommended to be executed in a child thread.
 
 13. void toPay(Activity activity 
@@ -143,8 +143,8 @@ String contractAddress
 - Parameter 1 transactionBytes: data in the form of a byte array of unsigned transactions
 - Parameter 2 walletName: current wallet name
 - Method call：
-`byte[] transationBytes=TronLinkSdk.getInstance().createTrxTransaction(mAddress,mToAddress, mAmount); 
-TronLinkSdk.getInstance().toPay(MainActivity.this, transationBytes, "your wallet name");`
+`byte[] transationBytes=StabilaClickSdk.getInstance().createStbTransaction(mAddress,mToAddress, mAmount); 
+StabilaClickSdk.getInstance().toPay(MainActivity.this, transationBytes, "your wallet name");`
 
 14. void toPay(Activity activity 
 , String transactionJson
@@ -153,7 +153,7 @@ TronLinkSdk.getInstance().toPay(MainActivity.this, transationBytes, "your wallet
 - Parameter 1 transactionJson: json string form data for unsigned transaction
 - Parameter 2 walletName: current wallet name
 - Method call：
-`TronLinkSdk.getInstance().toPay(MainActivity.this, transationJson, "your wallet name");`
+`StabilaClickSdk.getInstance().toPay(MainActivity.this, transationJson, "your wallet name");`
  
 15. void toPayReturnSign(Activity activity 
 , String json , String walletName
@@ -163,7 +163,7 @@ TronLinkSdk.getInstance().toPay(MainActivity.this, transationBytes, "your wallet
 - Parameter 2 walletName: current wallet name
 Method call：
 `
-TronLinkSdk.getInstance().toPayReturnSign(MainActivity.this, transationJson, "your wallet name");
+StabilaClickSdk.getInstance().toPayReturnSign(MainActivity.this, transationJson, "your wallet name");
 `
 
 16. byte[] triggerContract(String fromAddress, 
@@ -178,8 +178,8 @@ long amount);
 - Parameter 2 contractAddress: contract address
 - Parameter 3 methodName: the method name of the contract
 - Parameter 4 params: List of parameters for the contract
-- Parameter 5 freeLimit: Maximum value of miner's fee (unit: sun)
-- Parameter 6 amount: The number of trx injected by the contract
+- Parameter 5 freeLimit: Maximum value of miner's fee (unit: unit)
+- Parameter 6 amount: The number of stb injected by the contract
 Method call：
 
 ```String methodName = "transfer";
@@ -193,8 +193,8 @@ Param param2 = new Param();
 param2.setParamType(Param.paramType.DOUBLE);
 param2.setParamValue("10");
 params.add(param2);
-Byte[] transactionBytes = TronLinkSdk.getInstance().triggerContract(mWallet.getAddress(), contractAddress, methodName, params, "1000000",(long) (0.01 * 1000000));
+Byte[] transactionBytes = StabilaClickSdk.getInstance().triggerContract(mWallet.getAddress(), contractAddress, methodName, params, "1000000",(long) (0.01 * 1000000));
 if (transactionJson != null)
     Log.d(TAG, transactionJson);
-TronLinkSdk.getInstance().toPay(MainActivity.this, transactionBytes, mWallet.getName());
+StabilaClickSdk.getInstance().toPay(MainActivity.this, transactionBytes, mWallet.getName());
 ```
