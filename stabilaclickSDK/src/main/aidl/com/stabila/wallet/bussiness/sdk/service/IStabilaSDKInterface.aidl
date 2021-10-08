@@ -1,5 +1,5 @@
 // IStabilaSDKInterface.aidl
-package com.tron.wallet.bussiness.sdk.service;
+package com.stabila.wallet.bussiness.sdk.service;
 // Declare any non-default types here with import statements
 
 interface IStabilaSDKInterface {
